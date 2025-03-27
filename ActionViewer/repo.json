@@ -9,7 +9,7 @@
     "TestingAssemblyVersion": "0.3.1.0",
     "RepoUrl": "https://github.com/klotterc/ActionViewer",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 11,
+    "DalamudApiLevel": 12,
     "Tags": [
       "stq"
     ],
