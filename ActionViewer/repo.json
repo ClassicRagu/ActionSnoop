@@ -7,15 +7,15 @@
     "Description": "Use /av to view Forays-related info of nearby players",
     "AssemblyVersion": "0.3.1.0",
     "TestingAssemblyVersion": "0.3.1.0",
-    "RepoUrl": "https://github.com/klotterc/ActionViewer",
+    "RepoUrl": "https://github.com/ClassicRagu/ActionSnoop",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 12,
     "Tags": [
       "stq"
     ],
-    "IconUrl": "https://raw.githubusercontent.com/klotterc/ActionViewer/main/ActionViewer/images/icon.png",
-    "DownloadLinkInstall": "https://github.com/klotterc/ActionViewer/releases/download/v0.3.1.0/latest.zip",
-    "DownloadLinkTesting": "https://github.com/klotterc/ActionViewer/releases/download/v0.3.1.0/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/klotterc/ActionViewer/releases/download/v0.3.1.0/latest.zip"
+    "IconUrl": "https://raw.githubusercontent.com/ClassicRagu/ActionSnoop/main/ActionViewer/images/icon.png",
+    "DownloadLinkInstall": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.3.1.0/latest.zip",
+    "DownloadLinkTesting": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.3.1.0/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.3.1.0/latest.zip"
   }
 ]
