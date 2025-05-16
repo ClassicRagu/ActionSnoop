@@ -65,6 +65,22 @@ namespace ActionViewer.Functions
 				{
 					statusInfo.reraiserStatus = 1;
 				}
+				if (statusId.Equals(2625))
+				{
+					statusInfo.fortitudeStacks = status.Param;
+				}
+				if (statusId.Equals(2562))
+				{
+					statusInfo.shell = 2;
+				}
+				if (statusId.Equals(2334))
+				{
+					statusInfo.shell = 1;
+				}
+				if (statusId.Equals(2563))
+				{
+					statusInfo.bubble = true;
+				}
 			}
 			return statusInfo;
 		}
@@ -94,7 +110,7 @@ namespace ActionViewer.Functions
 			var iconSize = ImGui.GetTextLineHeight() * 2f;
 			var iconSizeVec = new Vector2(iconSize, iconSize);
 			bool eurekaTerritory = eurekaTerritories.Contains(Services.ClientState.TerritoryType);
-			int columnCount = eurekaTerritory ? 5 : 6;
+			int columnCount = eurekaTerritory ? 5 : 7;
 			bool delubrumTerritory = delubrumTerritories.Contains(Services.ClientState.TerritoryType);
 
 
@@ -116,6 +132,11 @@ namespace ActionViewer.Functions
 				{
 					ImGui.TableSetupColumn("Remembered", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.Reraiser);
 				}
+				if (delubrumTerritory)
+				{
+					ImGui.TableSetupColumn("Defensive", ImGuiTableColumnFlags.WidthFixed, 102f, (int) charColumns.Defensive);
+				}
+
 				ImGui.TableSetupColumn("Left", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Left);
 				ImGui.TableSetupColumn("Right", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Right);
 				ImGui.TableHeadersRow();
@@ -190,6 +211,52 @@ namespace ActionViewer.Functions
 								ImGui.SetTooltip(row.statusInfo.essenceName);
 							}
 						}
+						
+						// fort stacks + shell + bubble
+						if (delubrumTerritory)
+                        {
+                            var buffVec = new Vector2(ImGui.GetTextLineHeight() * 1.6f, ImGui.GetTextLineHeight() * 2f);
+                            ImGui.TableNextColumn();
+							//var color = (row.statusInfo.fortitudeStacks > 6) ? new Vector4(255, 255, 255, 255) : new Vector4(255, 255, 255, 255);
+							if (row.statusInfo.fortitudeStacks > 0)
+							{
+								ImGui.Image(Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(219625 + (uint) row.statusInfo.fortitudeStacks)).GetWrapOrEmpty().ImGuiHandle, buffVec);
+								if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+								{
+									ImGui.SetTooltip("Rays of Fortitude");
+								}
+							}
+							switch (row.statusInfo.shell)
+							{
+								case 2:
+									if (row.statusInfo.fortitudeStacks > 0) ImGui.SameLine();
+									ImGui.Image(Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(216625)).GetWrapOrEmpty().ImGuiHandle, buffVec);
+									if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+									{
+										ImGui.SetTooltip("Lost Shell II");
+									}
+                                    break;
+								case 1:
+									if (row.statusInfo.fortitudeStacks > 0) ImGui.SameLine();
+									ImGui.Image(Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(216677)).GetWrapOrEmpty().ImGuiHandle, buffVec);
+									if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+									{
+										ImGui.SetTooltip("Lost Shell");
+									}
+                                break;
+								default:
+									break;
+                            }
+                        if (row.statusInfo.bubble)
+						{
+							if (row.statusInfo.fortitudeStacks > 0 || row.statusInfo.shell > 0) ImGui.SameLine();
+							ImGui.Image(Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(216700)).GetWrapOrEmpty().ImGuiHandle, buffVec);
+                            if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+                            {
+                                ImGui.SetTooltip("Lost Bubble");
+                            }
+                        }
+						}
 
 						// left/right actions
 						ImGui.TableNextColumn();
@@ -221,6 +288,7 @@ namespace ActionViewer.Functions
 			Name,
 			Reraiser,
 			Essence,
+			Defensive,
 			Left,
 			Right
 		}
