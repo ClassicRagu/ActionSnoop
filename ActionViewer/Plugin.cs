@@ -31,7 +31,8 @@ namespace ActionViewer
         public IActionViewer ActionViewer { get; init; }
         public const string Authors = "boco-bot, ClassicRagu";
         public static readonly string Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
-		public readonly ExcelSheet<Lumina.Excel.Sheets.Action> ActionSheet;
+		public readonly ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> BozjaCache;
+		public readonly ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> EurekaAction;
 		public readonly ExcelSheet<Lumina.Excel.Sheets.Item> ItemSheet;
 
 		public Plugin(IDalamudPluginInterface pluginInterface)
@@ -50,7 +51,8 @@ namespace ActionViewer
             PluginInterface.UiBuilder.Draw += this.DrawUI;
             PluginInterface.UiBuilder.OpenConfigUi += this.DrawConfigUI;
 
-            this.ActionSheet = DataManager.GetExcelSheet<Lumina.Excel.Sheets.Action>();
+            this.BozjaCache = DataManager.GetExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem>();
+			this.EurekaAction = DataManager.GetExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction>();
 			this.ItemSheet = DataManager.GetExcelSheet<Lumina.Excel.Sheets.Item>();
 
 			ActionViewer = new ActionViewer();

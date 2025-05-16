@@ -22,7 +22,7 @@ namespace ActionViewer.Functions
 		private static List<ushort> eurekaTerritories = new List<ushort>() { 795, 827 };
 		private static List<ushort> delubrumTerritories = new List<ushort>() { 936, 937 };
 		private static List<int> essenceIds = new List<int>() { 2311, 2312, 2313, 2314, 2315, 2316, 2317, 2318, 2319, 2320, 2321, 2322, 2323, 2324, 2325, 2434, 2435, 2436, 2437, 2438, 2439, };
-		private static StatusInfo GetStatusInfo(StatusList statusList, ExcelSheet<Lumina.Excel.Sheets.Action> actionSheet, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet)
+		private static StatusInfo GetStatusInfo(StatusList statusList, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet)
 		{
 			StatusInfo statusInfo = new StatusInfo();
 
@@ -37,32 +37,25 @@ namespace ActionViewer.Functions
 				}
 				if (statusId.Equals(2348))
 				{
-					int leftId = status.Param % 256;
-					int rightId = (status.Param - leftId) / 256;
-
-					int leftStartingRow = leftId < 71 ? 20700 : leftId > 83 ? 23823 : 22273;
-					int rightStartingRow = rightId < 71 ? 20700 : rightId > 83 ? 23823 : 22273;
+					uint leftId = (uint)status.Param % 256;
+					uint rightId = (status.Param - leftId) / 256;
 
 					if (leftId > 0)
-						statusInfo.leftLuminaStatusInfo = actionSheet.GetRow((uint)(leftStartingRow + leftId));
+						statusInfo.leftLuminaStatusInfo = bozjaCache.GetRow(leftId).Action.Value;
 
 					if (rightId > 0)
-						statusInfo.rightLuminaStatusInfo = actionSheet.GetRow((uint)(rightStartingRow + rightId));
+						statusInfo.rightLuminaStatusInfo = bozjaCache.GetRow(rightId).Action.Value;
 				}
 				if (statusId.Equals(1618))
 				{
-					int leftId = status.Param % 256;
-					int rightId = (status.Param - leftId) / 256;
+					uint leftId = (uint)status.Param % 256;
+					uint rightId = (status.Param - leftId) / 256;
 
-					if (leftId > 50)
-						statusInfo.leftLuminaStatusInfo = actionSheet.GetRow((uint)(14476 + leftId - 51));
-					else if (leftId > 0)
-						statusInfo.leftLuminaStatusInfo = actionSheet.GetRow((uint)(12957 + leftId));
+					if (leftId > 0)
+						statusInfo.leftLuminaStatusInfo = eurekaAction.GetRow(leftId).Action.Value;
 
-					if (rightId > 50)
-						statusInfo.rightLuminaStatusInfo = actionSheet.GetRow((uint)(14476 + rightId - 51));
-					else if (rightId > 0)
-						statusInfo.rightLuminaStatusInfo = actionSheet.GetRow((uint)(12957 + rightId));
+					if (rightId > 0)
+						statusInfo.rightLuminaStatusInfo = eurekaAction.GetRow(rightId).Action.Value;
 				}
 				if (statusId.Equals(2355))
 				{
@@ -76,7 +69,7 @@ namespace ActionViewer.Functions
 			return statusInfo;
 		}
 
-		private static List<CharRow> GenerateRows(List<IPlayerCharacter> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.Action> actionSheet, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, bool targetRangeLimit)
+		private static List<CharRow> GenerateRows(List<IPlayerCharacter> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, bool targetRangeLimit)
 		{
 			List<CharRow> charRowList = new List<CharRow>();
 			foreach (IPlayerCharacter character in playerCharacters)
@@ -88,14 +81,14 @@ namespace ActionViewer.Functions
 					row.character = character;
 					row.playerName = character.Name.ToString();
 					row.jobId = (uint)character.ClassJob.Value.JobIndex;
-					row.statusInfo = GetStatusInfo(character.StatusList, actionSheet, itemSheet);
+					row.statusInfo = GetStatusInfo(character.StatusList, bozjaCache, eurekaAction, itemSheet);
 					charRowList.Add(row);
 				}
 			}
 			return charRowList;
 		}
 
-		public static void GenerateStatusTable(List<IPlayerCharacter> playerCharacters, string searchText, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.Action> actionSheet, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, string filter = "none")
+		public static void GenerateStatusTable(List<IPlayerCharacter> playerCharacters, string searchText, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, string filter = "none")
 		{
 			ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable;// | ImGuiTableFlags.SizingFixedFit;
 			var iconSize = ImGui.GetTextLineHeight() * 2f;
@@ -105,7 +98,7 @@ namespace ActionViewer.Functions
 			bool delubrumTerritory = delubrumTerritories.Contains(Services.ClientState.TerritoryType);
 
 
-			List<CharRow> charRowList = GenerateRows(playerCharacters, actionSheet, itemSheet, configuration.TargetRangeLimit);
+			List<CharRow> charRowList = GenerateRows(playerCharacters, bozjaCache, eurekaAction, itemSheet, configuration.TargetRangeLimit);
 
 			if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
 			{
