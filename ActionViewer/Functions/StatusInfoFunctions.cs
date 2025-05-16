@@ -110,11 +110,11 @@ namespace ActionViewer.Functions
 			var iconSize = ImGui.GetTextLineHeight() * 2f;
 			var iconSizeVec = new Vector2(iconSize, iconSize);
 			bool eurekaTerritory = eurekaTerritories.Contains(Services.ClientState.TerritoryType);
-			int columnCount = eurekaTerritory ? 5 : 7;
 			bool delubrumTerritory = delubrumTerritories.Contains(Services.ClientState.TerritoryType);
+            int columnCount = eurekaTerritory ? 5 : (delubrumTerritory ? 7 : 6);
 
 
-			List<CharRow> charRowList = GenerateRows(playerCharacters, bozjaCache, eurekaAction, itemSheet, configuration.TargetRangeLimit);
+            List<CharRow> charRowList = GenerateRows(playerCharacters, bozjaCache, eurekaAction, itemSheet, configuration.TargetRangeLimit);
 
 			if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
 			{
@@ -223,7 +223,7 @@ namespace ActionViewer.Functions
 								ImGui.Image(Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(219625 + (uint) row.statusInfo.fortitudeStacks)).GetWrapOrEmpty().ImGuiHandle, buffVec);
 								if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
 								{
-									ImGui.SetTooltip("Rays of Fortitude");
+									ImGui.SetTooltip("Rays of Fortitude"); //localisation? what localisation
 								}
 							}
 							switch (row.statusInfo.shell)
@@ -247,15 +247,15 @@ namespace ActionViewer.Functions
 								default:
 									break;
                             }
-                        if (row.statusInfo.bubble)
-						{
-							if (row.statusInfo.fortitudeStacks > 0 || row.statusInfo.shell > 0) ImGui.SameLine();
-							ImGui.Image(Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(216700)).GetWrapOrEmpty().ImGuiHandle, buffVec);
-                            if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                            {
-                                ImGui.SetTooltip("Lost Bubble");
-                            }
-                        }
+							if (row.statusInfo.bubble)
+							{
+								if (row.statusInfo.fortitudeStacks > 0 || row.statusInfo.shell > 0) ImGui.SameLine();
+								ImGui.Image(Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(216700)).GetWrapOrEmpty().ImGuiHandle, buffVec);
+								if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+								{
+									ImGui.SetTooltip("Lost Bubble");
+								}
+							}
 						}
 
 						// left/right actions
