@@ -35,6 +35,10 @@ namespace ActionViewer.Functions
 				{
 					statusInfo.masteryLevel = status.Param;
 				}
+				if(statusId == 4262)
+				{
+					statusInfo.resStacks = status.Param;
+				}
 			}
 			return statusInfo;
 		}
@@ -63,7 +67,7 @@ namespace ActionViewer.Functions
 			ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable;// | ImGuiTableFlags.SizingFixedFit;
 			var iconSize = ImGui.GetTextLineHeight() * 2f;
 			var iconSizeVec = new Vector2(iconSize, iconSize);
-			int columnCount = 5;
+			int columnCount = 6;
 
 
 			List<OCCharRow> charRowList = GenerateRows(playerCharacters, statusSheet, configuration.TargetRangeLimit);
@@ -74,6 +78,7 @@ namespace ActionViewer.Functions
 				ImGui.TableSetupColumn("PJ", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.PJ);
 				ImGui.TableSetupColumn("Lv", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.Lv);
 				ImGui.TableSetupColumn("PM", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.PM);
+				ImGui.TableSetupColumn("RR", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.RR);
 				if (!configuration.AnonymousMode)
 				{
 					ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.PreferSortDescending, 1f, (int)charColumns.Name);
@@ -125,6 +130,10 @@ namespace ActionViewer.Functions
 						ImGui.Image(
 							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.masteryIcon)).GetWrapOrEmpty().ImGuiHandle,
 							new Vector2(iconSize * (float)0.8, iconSize));
+						ImGui.TableNextColumn();
+						ImGui.Image(
+							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.resIcon)).GetWrapOrEmpty().ImGuiHandle,
+							new Vector2(iconSize * (float)0.8, iconSize));
 						if (!configuration.AnonymousMode)
 						{
 							ImGui.TableNextColumn();
@@ -147,6 +156,7 @@ namespace ActionViewer.Functions
 			PJ,
 			Lv,
 			PM,
+			RR,
 			Name
 		}
 
@@ -234,6 +244,16 @@ namespace ActionViewer.Functions
 						else
 						{
 							sortedCharaData = sortedCharaData.OrderByDescending(o => o.statusInfo.masteryLevel);
+						}
+						break;
+					case charColumns.RR:
+						if (columnSortSpec.SortDirection == ImGuiSortDirection.Ascending)
+						{
+							sortedCharaData = sortedCharaData.OrderBy(o => o.statusInfo.resStacks);
+						}
+						else
+						{
+							sortedCharaData = sortedCharaData.OrderByDescending(o => o.statusInfo.resStacks);
 						}
 						break;
 					default:

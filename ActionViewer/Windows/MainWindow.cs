@@ -96,7 +96,7 @@ public class MainWindow : Window
 		}
 		else
 		{
-			ImGui.Text("Please Enter a Save the Queen or Eureka Zone");
+			ImGui.Text("Please Enter a Field Operation Zone");
 		}
 	}
 }
