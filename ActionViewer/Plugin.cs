@@ -34,6 +34,7 @@ namespace ActionViewer
 		public readonly ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> BozjaCache;
 		public readonly ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> EurekaAction;
 		public readonly ExcelSheet<Lumina.Excel.Sheets.Item> ItemSheet;
+        public readonly ExcelSheet<Lumina.Excel.Sheets.Status> StatusSheet;
 
 		public Plugin(IDalamudPluginInterface pluginInterface)
         {
@@ -54,6 +55,7 @@ namespace ActionViewer
             this.BozjaCache = DataManager.GetExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem>();
 			this.EurekaAction = DataManager.GetExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction>();
 			this.ItemSheet = DataManager.GetExcelSheet<Lumina.Excel.Sheets.Item>();
+            this.StatusSheet = DataManager.GetExcelSheet<Lumina.Excel.Sheets.Status>();
 
 			ActionViewer = new ActionViewer();
 

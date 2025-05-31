@@ -17,7 +17,7 @@ public class MainWindow : Window
      * 937 - DRS
      * 975 - Zadnor
      */
-	private List<ushort> territoryTypes = new List<ushort>() { 920, 936, 937, 975, 795, 827 };
+	private List<ushort> territoryTypes = new List<ushort>() { 920, 936, 937, 975, 795, 827, 1252 };
 	private static List<ushort> eurekaTerritories = new List<ushort>() { 795, 827 };
 	private List<uint> tanks = new List<uint>() { 1, 3, 12, 17 };
 	private List<uint> healers = new List<uint>() { 6, 9, 13, 20 };
@@ -46,7 +46,7 @@ public class MainWindow : Window
 			new GeneratedTab(this.plugin, "Phys Ranged", physRanged),
 			new GeneratedTab(this.plugin, "Caster", casterDPS),
 			};
-		} else {
+		} else if (Services.ClientState.TerritoryType != 1252)  {
 			this.tabs = new List<MainWindowTab> {
 			new GeneratedTab(this.plugin, "Main"),
 			new GeneratedTab(this.plugin, "No Ess."),
@@ -55,6 +55,18 @@ public class MainWindow : Window
 			new GeneratedTab(this.plugin, "Melee", melee),
 			new GeneratedTab(this.plugin, "Phys Ranged", physRanged),
 			new GeneratedTab(this.plugin, "Caster", casterDPS),
+			};
+		} else
+		{
+			this.tabs = new List<MainWindowTab>
+			{
+				new OCTab(this.plugin, "Main"),
+				new OCTab(this.plugin, "FL"),
+				new OCTab(this.plugin, "Tanks", tanks),
+				new OCTab(this.plugin, "Healers", healers),
+				new OCTab(this.plugin, "Melee", melee),
+				new OCTab(this.plugin, "Phys Ranged", physRanged),
+				new OCTab(this.plugin, "Caster", casterDPS),
 			};
 		}
 	}
