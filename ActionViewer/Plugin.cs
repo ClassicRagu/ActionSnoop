@@ -7,6 +7,7 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using Lumina.Excel;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ActionViewer
@@ -18,13 +19,14 @@ namespace ActionViewer
         private const string commandName = "/av";
         private const string configCommandName = "/avcfg";
 
-        [PluginService] public static ITargetManager TargetManager { get; private set; } = null!;
+		private static List<ushort> territoryTypes = new List<ushort>() { 920, 936, 937, 975, 795, 827, 1252 };
+		[PluginService] public static ITargetManager TargetManager { get; private set; } = null!;
 
         [PluginService] public static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
         [PluginService] public static ITextureProvider TextureProvider { get; private set; } = null!;
         [PluginService] public static IDataManager DataManager { get; private set; } = null;
 
-        public readonly WindowSystem WindowSystem = new("ActionViewer");
+		public readonly WindowSystem WindowSystem = new("ActionViewer");
         public readonly MainWindow MainWindow;
         public readonly ConfigWindow ConfigWindow;
         public Configuration Configuration { get; init; }
@@ -43,7 +45,11 @@ namespace ActionViewer
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             Configuration.Initialize(Services.PluginInterface);
 
-            this.MainWindow = new MainWindow(this);
+			Services.ClientState.TerritoryChanged += TerritoryChangePoll;
+
+			TerritoryChangePoll(Services.ClientState.TerritoryType);
+
+			this.MainWindow = new MainWindow(this);
             this.ConfigWindow = new ConfigWindow(this);
 
 			this.WindowSystem.AddWindow(this.MainWindow);
@@ -75,7 +81,20 @@ namespace ActionViewer
             //Services.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
         }
 
-        public void Dispose()
+        private void TerritoryChangePoll(ushort territoryId)
+        {
+            if (PlayerInRelevantTerritory())
+            {
+                this.MainWindow.Reset();
+            }
+        }
+
+		public static bool PlayerInRelevantTerritory()
+		{
+			return Plugin.territoryTypes.Contains(Services.ClientState.TerritoryType);
+		}
+
+		public void Dispose()
         {
             WindowSystem.RemoveAllWindows();
             Services.Commands.RemoveHandler(commandName);

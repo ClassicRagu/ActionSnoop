@@ -36,6 +36,11 @@ public class MainWindow : Window
 		SizeCondition = ImGuiCond.FirstUseEver;
 
 		this.plugin = plugin;
+		CreateTabs();
+	}
+
+	public void CreateTabs()
+	{
 		if (eurekaTerritories.Contains(Services.ClientState.TerritoryType))
 		{
 			this.tabs = new List<MainWindowTab> {
@@ -69,6 +74,12 @@ public class MainWindow : Window
 				new OCTab(this.plugin, "Caster", casterDPS),
 			};
 		}
+	}
+
+	public void Reset()
+	{
+		this.tabs.Clear();
+		CreateTabs();
 	}
 
 	public void Dispose()
