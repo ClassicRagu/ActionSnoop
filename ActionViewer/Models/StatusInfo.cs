@@ -16,6 +16,9 @@ namespace ActionViewer.Models
         public Lumina.Excel.Sheets.Item? itemLuminaInfo { get; set; }
 		public int essenceId { get; set; }
         public int reraiserStatus { get; set; }
+        public int fortitudeStacks { get; set; }
+        public int shell { get; set; }
+        public bool bubble { get; set; }
         public string essenceName
         {
             get
