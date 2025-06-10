@@ -91,7 +91,8 @@ namespace ActionViewer.Functions
 				{
 
 					if (filter == "none" ||
-						(filter == "FL" && row.statusInfo.phantomJob.Value.RowId == 4242)
+						(filter == "FL" && row.statusInfo.phantomJob.Value.RowId == 4242) ||
+						(filter == "Dead Chemist" && row.statusInfo.phantomJob.Value.RowId == 4367 && row.character.IsDead)
 						)
 					{
 						// player job, name

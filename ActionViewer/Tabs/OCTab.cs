@@ -35,6 +35,6 @@ public class OCTab : MainWindowTab
 	public override void Draw()
 	{
 		ImGui.SetNextItemWidth(-1 * ImGui.GetIO().FontGlobalScale);
-		OCStatusInfoFunctions.GenerateStatusTable(PlayerCharacters, this.Plugin.Configuration, this.Plugin.StatusSheet, TabType == "FL" ? "FL" : "none");
+		OCStatusInfoFunctions.GenerateStatusTable(PlayerCharacters, this.Plugin.Configuration, this.Plugin.StatusSheet, TabType == "FL" ? "FL" : TabType == "Dead Chemist" ? "Dead Chemist" : "none");
 	}
 }

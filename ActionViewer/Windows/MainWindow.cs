@@ -67,6 +67,7 @@ public class MainWindow : Window
 			{
 				new OCTab(this.plugin, "Main"),
 				new OCTab(this.plugin, "FL"),
+				new OCTab(this.plugin, "Dead Chemist"),
 				new OCTab(this.plugin, "Tanks", tanks),
 				new OCTab(this.plugin, "Healers", healers),
 				new OCTab(this.plugin, "Melee", melee),
