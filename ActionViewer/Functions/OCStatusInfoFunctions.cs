@@ -31,11 +31,11 @@ namespace ActionViewer.Functions
 					statusInfo.jobLevel = (ushort)(status.Param % 256);
 					statusInfo.phantomJob = statusSheet.GetRow(statusId);
 				}
-				if(statusId == 4226)
+				if (statusId == 4226)
 				{
 					statusInfo.masteryLevel = status.Param;
 				}
-				if(statusId == 4262)
+				if (statusId == 4262)
 				{
 					statusInfo.resStacks = status.Param;
 				}
@@ -48,26 +48,23 @@ namespace ActionViewer.Functions
 			List<OCCharRow> charRowList = new List<OCCharRow>();
 			foreach (IPlayerCharacter character in playerCharacters)
 			{
-				if (!targetRangeLimit || IsInRange(character))
-				{
-					// get player name, job ID, status list
-					OCCharRow row = new OCCharRow();
-					row.character = character;
-					row.playerName = character.Name.ToString();
-					row.jobId = (uint)character.ClassJob.Value.JobIndex;
-					row.statusInfo = GetStatusInfo(character.StatusList, statusSheet);
-					charRowList.Add(row);
-				}
+				// get player name, job ID, status list
+				OCCharRow row = new OCCharRow();
+				row.character = character;
+				row.playerName = character.Name.ToString();
+				row.jobId = (uint)character.ClassJob.Value.JobIndex;
+				row.statusInfo = GetStatusInfo(character.StatusList, statusSheet);
+				charRowList.Add(row);
 			}
 			return charRowList;
 		}
 
-		public static void GenerateStatusTable(List<IPlayerCharacter> playerCharacters, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, string filter = "none")
+		public static void GenerateStatusTable(List<IPlayerCharacter> playerCharacters, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, bool inFT, string filter = "none")
 		{
 			ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable;// | ImGuiTableFlags.SizingFixedFit;
 			var iconSize = ImGui.GetTextLineHeight() * 2f;
 			var iconSizeVec = new Vector2(iconSize, iconSize);
-			int columnCount = 6;
+			int columnCount = inFT ? 6 : 5;
 
 
 			List<OCCharRow> charRowList = GenerateRows(playerCharacters, statusSheet, configuration.TargetRangeLimit);
@@ -78,7 +75,8 @@ namespace ActionViewer.Functions
 				ImGui.TableSetupColumn("PJ", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.PJ);
 				ImGui.TableSetupColumn("Lv", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.Lv);
 				ImGui.TableSetupColumn("PM", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.PM);
-				ImGui.TableSetupColumn("RR", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.RR);
+				if(inFT)
+					ImGui.TableSetupColumn("RR", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.RR);
 				if (!configuration.AnonymousMode)
 				{
 					ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.PreferSortDescending, 1f, (int)charColumns.Name);
@@ -131,10 +129,12 @@ namespace ActionViewer.Functions
 						ImGui.Image(
 							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.masteryIcon)).GetWrapOrEmpty().ImGuiHandle,
 							new Vector2(iconSize * (float)0.8, iconSize));
-						ImGui.TableNextColumn();
-						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.resIcon)).GetWrapOrEmpty().ImGuiHandle,
-							new Vector2(iconSize * (float)0.8, iconSize));
+						if (inFT) {
+							ImGui.TableNextColumn();
+							ImGui.Image(
+								Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.resIcon)).GetWrapOrEmpty().ImGuiHandle,
+								new Vector2(iconSize * (float)0.8, iconSize));
+						}
 						if (!configuration.AnonymousMode)
 						{
 							ImGui.TableNextColumn();
