@@ -47,8 +47,6 @@ namespace ActionViewer
 
 			Services.ClientState.TerritoryChanged += TerritoryChangePoll;
 
-			TerritoryChangePoll(Services.ClientState.TerritoryType);
-
 			this.MainWindow = new MainWindow(this);
             this.ConfigWindow = new ConfigWindow(this);
 
@@ -65,10 +63,12 @@ namespace ActionViewer
 
 			ActionViewer = new ActionViewer();
 
-            // you might normally want to embed resources and load them from the manifest stream
-            //PluginUi = new PluginUI(Configuration, ActionViewer);
+			TerritoryChangePoll(Services.ClientState.TerritoryType);
 
-            Services.Commands.AddHandler(commandName, new CommandInfo(OnCommand)
+			// you might normally want to embed resources and load them from the manifest stream
+			//PluginUi = new PluginUI(Configuration, ActionViewer);
+
+			Services.Commands.AddHandler(commandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "View a list of the Essence and Lost Actions of nearby players"
             });
