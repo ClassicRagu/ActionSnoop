@@ -3,7 +3,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Interface.Textures;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using Lumina.Excel;
 using System.Collections.Generic;
 using System.Data;
@@ -111,7 +111,7 @@ namespace ActionViewer.Functions
 						}
 
 						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(jobIconId)).GetWrapOrEmpty().ImGuiHandle,
+							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(jobIconId)).GetWrapOrEmpty().Handle,
 							iconSizeVec, Vector2.Zero, Vector2.One);
 						var hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
 						var left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
@@ -121,18 +121,18 @@ namespace ActionViewer.Functions
 						}
 						ImGui.TableNextColumn();
 						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.jobIcon)).GetWrapOrEmpty().ImGuiHandle,
+							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.jobIcon)).GetWrapOrEmpty().Handle,
 							new Vector2(iconSize * (float)0.8, iconSize));
 						ImGui.TableNextColumn();
 						ImGui.Text(row.statusInfo.jobLevel.ToString());
 						ImGui.TableNextColumn();
 						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.masteryIcon)).GetWrapOrEmpty().ImGuiHandle,
+							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.masteryIcon)).GetWrapOrEmpty().Handle,
 							new Vector2(iconSize * (float)0.8, iconSize));
 						if (inFT) {
 							ImGui.TableNextColumn();
 							ImGui.Image(
-								Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.resIcon)).GetWrapOrEmpty().ImGuiHandle,
+								Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.resIcon)).GetWrapOrEmpty().Handle,
 								new Vector2(iconSize * (float)0.8, iconSize));
 						}
 						if (!configuration.AnonymousMode)
