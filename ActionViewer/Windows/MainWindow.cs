@@ -90,7 +90,7 @@ public class MainWindow : Window
 
 	public override void Draw()
 	{
-		if (territoryTypes.Contains(Services.ClientState.TerritoryType))
+		if (this.plugin.Configuration.UnrestrictZones || territoryTypes.Contains(Services.ClientState.TerritoryType))
 		{
 			if (ImGui.BeginTabBar("##ActionViewer_MainWindowTabs", ImGuiTabBarFlags.None))
 			{
