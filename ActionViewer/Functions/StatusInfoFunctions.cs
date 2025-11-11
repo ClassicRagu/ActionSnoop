@@ -229,28 +229,32 @@ namespace ActionViewer.Functions
 		{
 
 			Dictionary<uint, uint> jobSort = new Dictionary<uint, uint>()
-			{
-				{1, 1 }, // PLD
+            {
+                {0, 0 }, // Default
+                {8, 0}, // ARC 
+                {11, 0}, // ROG 
+                {1, 1 }, // PLD
                 {3, 2 }, // WAR
-                {12, 3}, // DRK
-                {17, 4 }, // GNB
+                {14, 3}, // DRK
+                {19, 4 }, // GNB
                 {6 , 5 }, // WHM
-                {9 , 6 }, // SCH
-                {13, 7}, // AST
-                {20 , 8 }, // SGE
+                {10 , 6 }, // SCH
+                {15, 7}, // AST
+                {22 , 8 }, // SGE
                 {2, 9 }, // MNK
                 {4 , 10 }, // DRG
-                {10 , 11 }, // NIN
-                {14 , 12 }, // SAM
-                {19 , 13 }, // RPR
-				{21, 20 }, // VPR
+                {12 , 11 }, // NIN
+                {16 , 12 }, // SAM
+                {21 , 13 }, // RPR
+				{23, 20 }, // VPR
 				{5 , 14 }, // BRD
-                {11 , 15 }, // MCH
-                {18 , 16 }, // DNC
+                {13 , 15 }, // MCH
+                {20 , 16 }, // DNC
                 {7 , 17 }, // BLM
-                {8 , 18 }, // SMN
-                {15 , 19 }, // RDM
-				{22, 21 } // PCT
+                {9 , 18 }, // SMN
+                {17 , 19 }, // RDM
+				{24, 21 }, // PCT
+                {18, 22 } // BLU
             };
 
 			IEnumerable<CharRow> sortedCharaData = charDataList;

@@ -1,12 +1,7 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-
-namespace ActionViewer.Models
+﻿namespace ActionViewer.Models
 {
-    public class CharRow
+    public class CharRow : BaseCharRow
     {
-        public IPlayerCharacter character { get; set; }
-        public uint jobId { get; set; }
-        public string playerName { get; set; }
         public StatusInfo statusInfo { get; set; }
     }
     public class StatusInfo
