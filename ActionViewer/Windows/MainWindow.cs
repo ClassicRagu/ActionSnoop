@@ -46,24 +46,24 @@ public class MainWindow : Window
 		if (eurekaTerritories.Contains(Services.ClientState.TerritoryType))
 		{
 			this.tabs = new List<MainWindowTab> {
-			new GeneratedTab(this.plugin, "Main"),
-			new GeneratedTab(this.plugin, "Tanks", tanks),
-			new GeneratedTab(this.plugin, "Healers", healers),
-			new GeneratedTab(this.plugin, "Melee", melee),
-			new GeneratedTab(this.plugin, "Phys Ranged", physRanged),
-			new GeneratedTab(this.plugin, "Caster", casterDPS),
-			new GeneratedTab(this.plugin, "Classes", xivClasses),
+			new STQEurekaTab(this.plugin, "Main"),
+			new STQEurekaTab(this.plugin, "Tanks", tanks),
+			new STQEurekaTab(this.plugin, "Healers", healers),
+			new STQEurekaTab(this.plugin, "Melee", melee),
+			new STQEurekaTab(this.plugin, "Phys Ranged", physRanged),
+			new STQEurekaTab(this.plugin, "Caster", casterDPS),
+			new STQEurekaTab(this.plugin, "Classes", xivClasses),
 			};
 		} else if (territoryTypes.Contains(Services.ClientState.TerritoryType))  {
 			this.tabs = new List<MainWindowTab> {
-			new GeneratedTab(this.plugin, "Main"),
-			new GeneratedTab(this.plugin, "No Ess."),
-			new GeneratedTab(this.plugin, "Tanks", tanks),
-			new GeneratedTab(this.plugin, "Healers", healers),
-			new GeneratedTab(this.plugin, "Melee", melee),
-			new GeneratedTab(this.plugin, "Phys Ranged", physRanged),
-			new GeneratedTab(this.plugin, "Caster", casterDPS),
-			new GeneratedTab(this.plugin, "Classes", xivClasses),
+			new STQEurekaTab(this.plugin, "Main"),
+			new STQEurekaTab(this.plugin, "No Ess."),
+			new STQEurekaTab(this.plugin, "Tanks", tanks),
+			new STQEurekaTab(this.plugin, "Healers", healers),
+			new STQEurekaTab(this.plugin, "Melee", melee),
+			new STQEurekaTab(this.plugin, "Phys Ranged", physRanged),
+			new STQEurekaTab(this.plugin, "Caster", casterDPS),
+			new STQEurekaTab(this.plugin, "Classes", xivClasses),
 			};
 		} else if (Services.ClientState.TerritoryType == 1252)
 		{

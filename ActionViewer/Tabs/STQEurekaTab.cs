@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ActionViewer.Tabs;
 
-public class GeneratedTab : MainWindowTab
+public class STQEurekaTab : MainWindowTab
 {
 	private string searchText = string.Empty;
 
@@ -28,7 +28,7 @@ public class GeneratedTab : MainWindowTab
 		}
 	}
 
-	public GeneratedTab(Plugin plugin, string tabType, List<uint>? jobList = null) : base(tabType, plugin) {
+	public STQEurekaTab(Plugin plugin, string tabType, List<uint>? jobList = null) : base(tabType, plugin) {
 		TabType = tabType;
 		JobList = jobList;
 	}
@@ -37,6 +37,6 @@ public class GeneratedTab : MainWindowTab
 	{
 		ImGui.SetNextItemWidth(-1 * ImGui.GetIO().FontGlobalScale);
 		ImGui.InputText("", ref searchText, 256);
-		StatusInfoFunctions.GenerateStatusTable(PlayerCharacters, searchText, this.Plugin.Configuration, this.Plugin.BozjaCache, this.Plugin.EurekaAction, this.Plugin.ItemSheet, TabType == "No Ess." ? "noEss" : "none");
+		STQEurekaStatusInfoFunctions.GenerateStatusTable(PlayerCharacters, searchText, this.Plugin.Configuration, this.Plugin.BozjaCache, this.Plugin.EurekaAction, this.Plugin.ItemSheet, TabType == "No Ess." ? "noEss" : "none");
 	}
 }

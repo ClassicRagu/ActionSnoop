@@ -12,7 +12,7 @@ using System.Numerics;
 
 namespace ActionViewer.Functions
 {
-	public static class StatusInfoFunctions
+	public static class STQEurekaStatusInfoFunctions
 	{
 		public static bool IsInRange(IGameObject? target)
 		{
@@ -22,9 +22,9 @@ namespace ActionViewer.Functions
 		private static List<ushort> eurekaTerritories = new List<ushort>() { 795, 827 };
 		private static List<ushort> delubrumTerritories = new List<ushort>() { 936, 937 };
 		private static List<int> essenceIds = new List<int>() { 2311, 2312, 2313, 2314, 2315, 2316, 2317, 2318, 2319, 2320, 2321, 2322, 2323, 2324, 2325, 2434, 2435, 2436, 2437, 2438, 2439, };
-		private static StatusInfo GetStatusInfo(StatusList statusList, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet)
+		private static STQEurekaStatusInfo GetStatusInfo(StatusList statusList, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet)
 		{
-			StatusInfo statusInfo = new StatusInfo();
+			STQEurekaStatusInfo statusInfo = new STQEurekaStatusInfo();
 
 			foreach (Status status in statusList)
 			{
@@ -69,15 +69,15 @@ namespace ActionViewer.Functions
 			return statusInfo;
 		}
 
-		private static List<CharRow> GenerateRows(List<IPlayerCharacter> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, bool targetRangeLimit)
+		private static List<STQEurekaCharRow> GenerateRows(List<IPlayerCharacter> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, bool targetRangeLimit)
 		{
-			List<CharRow> charRowList = new List<CharRow>();
+			List<STQEurekaCharRow> charRowList = new List<STQEurekaCharRow>();
 			foreach (IPlayerCharacter character in playerCharacters)
 			{
 				if (!targetRangeLimit || IsInRange(character))
 				{
 					// get player name, job ID, status list
-					CharRow row = new CharRow();
+					STQEurekaCharRow row = new STQEurekaCharRow();
 					row.character = character;
 					row.playerName = character.Name.ToString();
 					row.jobId = (uint)character.ClassJob.RowId;
@@ -98,7 +98,7 @@ namespace ActionViewer.Functions
 			bool delubrumTerritory = delubrumTerritories.Contains(Services.ClientState.TerritoryType);
 
 
-			List<CharRow> charRowList = GenerateRows(playerCharacters, bozjaCache, eurekaAction, itemSheet, configuration.TargetRangeLimit);
+			List<STQEurekaCharRow> charRowList = GenerateRows(playerCharacters, bozjaCache, eurekaAction, itemSheet, configuration.TargetRangeLimit);
 
 			if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
 			{
@@ -122,7 +122,7 @@ namespace ActionViewer.Functions
 				ImGuiTableSortSpecsPtr sortSpecs = ImGui.TableGetSortSpecs();
 				charRowList = SortCharDataWithSortSpecs(sortSpecs, charRowList);
 
-				foreach (CharRow row in charRowList)
+				foreach (STQEurekaCharRow row in charRowList)
 				{
 
 					if ((searchText == string.Empty ||
@@ -211,9 +211,9 @@ namespace ActionViewer.Functions
 			Right
 		}
 
-		public static List<CharRow> SortCharDataWithSortSpecs(ImGuiTableSortSpecsPtr sortSpecs, List<CharRow> charDataList)
+		public static List<STQEurekaCharRow> SortCharDataWithSortSpecs(ImGuiTableSortSpecsPtr sortSpecs, List<STQEurekaCharRow> charDataList)
 		{
-			IEnumerable<CharRow> sortedCharaData = charDataList;
+			IEnumerable<STQEurekaCharRow> sortedCharaData = charDataList;
 
 			for (int i = 0; i < sortSpecs.SpecsCount; i++)
 			{

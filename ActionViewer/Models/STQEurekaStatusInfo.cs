@@ -1,10 +1,10 @@
 ﻿namespace ActionViewer.Models
 {
-    public class CharRow : BaseCharRow
+    public class STQEurekaCharRow : BaseCharRow
     {
-        public StatusInfo statusInfo { get; set; }
+        public STQEurekaStatusInfo statusInfo { get; set; }
     }
-    public class StatusInfo
+    public class STQEurekaStatusInfo
     {
         public Lumina.Excel.Sheets.Action? leftLuminaStatusInfo { get; set; }
         public Lumina.Excel.Sheets.Action? rightLuminaStatusInfo { get; set; }
