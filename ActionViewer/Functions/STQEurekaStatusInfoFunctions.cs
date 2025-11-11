@@ -12,7 +12,7 @@ using System.Numerics;
 
 namespace ActionViewer.Functions
 {
-	public static class StatusInfoFunctions
+	public static class STQEurekaStatusInfoFunctions
 	{
 		public static bool IsInRange(IGameObject? target)
 		{
@@ -22,9 +22,9 @@ namespace ActionViewer.Functions
 		private static List<ushort> eurekaTerritories = new List<ushort>() { 795, 827 };
 		private static List<ushort> delubrumTerritories = new List<ushort>() { 936, 937 };
 		private static List<int> essenceIds = new List<int>() { 2311, 2312, 2313, 2314, 2315, 2316, 2317, 2318, 2319, 2320, 2321, 2322, 2323, 2324, 2325, 2434, 2435, 2436, 2437, 2438, 2439, };
-		private static StatusInfo GetStatusInfo(StatusList statusList, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet)
+		private static STQEurekaStatusInfo GetStatusInfo(StatusList statusList, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet)
 		{
-			StatusInfo statusInfo = new StatusInfo();
+			STQEurekaStatusInfo statusInfo = new STQEurekaStatusInfo();
 
 			foreach (Status status in statusList)
 			{
@@ -69,18 +69,18 @@ namespace ActionViewer.Functions
 			return statusInfo;
 		}
 
-		private static List<CharRow> GenerateRows(List<IPlayerCharacter> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, bool targetRangeLimit)
+		private static List<STQEurekaCharRow> GenerateRows(List<IPlayerCharacter> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, bool targetRangeLimit)
 		{
-			List<CharRow> charRowList = new List<CharRow>();
+			List<STQEurekaCharRow> charRowList = new List<STQEurekaCharRow>();
 			foreach (IPlayerCharacter character in playerCharacters)
 			{
 				if (!targetRangeLimit || IsInRange(character))
 				{
 					// get player name, job ID, status list
-					CharRow row = new CharRow();
+					STQEurekaCharRow row = new STQEurekaCharRow();
 					row.character = character;
 					row.playerName = character.Name.ToString();
-					row.jobId = (uint)character.ClassJob.Value.JobIndex;
+					row.jobId = (uint)character.ClassJob.RowId;
 					row.statusInfo = GetStatusInfo(character.StatusList, bozjaCache, eurekaAction, itemSheet);
 					charRowList.Add(row);
 				}
@@ -98,7 +98,7 @@ namespace ActionViewer.Functions
 			bool delubrumTerritory = delubrumTerritories.Contains(Services.ClientState.TerritoryType);
 
 
-			List<CharRow> charRowList = GenerateRows(playerCharacters, bozjaCache, eurekaAction, itemSheet, configuration.TargetRangeLimit);
+			List<STQEurekaCharRow> charRowList = GenerateRows(playerCharacters, bozjaCache, eurekaAction, itemSheet, configuration.TargetRangeLimit);
 
 			if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
 			{
@@ -122,7 +122,7 @@ namespace ActionViewer.Functions
 				ImGuiTableSortSpecsPtr sortSpecs = ImGui.TableGetSortSpecs();
 				charRowList = SortCharDataWithSortSpecs(sortSpecs, charRowList);
 
-				foreach (CharRow row in charRowList)
+				foreach (STQEurekaCharRow row in charRowList)
 				{
 
 					if ((searchText == string.Empty ||
@@ -137,22 +137,8 @@ namespace ActionViewer.Functions
 						// player job, name
 						ImGui.TableNextColumn();
 
-						uint jobIconId = 62118;
-						if (row.jobId >= 10)
-						{
-							jobIconId += 2 + row.jobId;
-						}
-						else if (row.jobId >= 8)
-						{
-							jobIconId += 1 + row.jobId;
-						}
-						else
-						{
-							jobIconId += row.jobId;
-						}
-
 						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(jobIconId)).GetWrapOrEmpty().Handle,
+							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.jobIconId)).GetWrapOrEmpty().Handle,
 							iconSizeVec, Vector2.Zero, Vector2.One);
 						var hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
 						var left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
@@ -225,35 +211,9 @@ namespace ActionViewer.Functions
 			Right
 		}
 
-		public static List<CharRow> SortCharDataWithSortSpecs(ImGuiTableSortSpecsPtr sortSpecs, List<CharRow> charDataList)
+		public static List<STQEurekaCharRow> SortCharDataWithSortSpecs(ImGuiTableSortSpecsPtr sortSpecs, List<STQEurekaCharRow> charDataList)
 		{
-
-			Dictionary<uint, uint> jobSort = new Dictionary<uint, uint>()
-			{
-				{1, 1 }, // PLD
-                {3, 2 }, // WAR
-                {12, 3}, // DRK
-                {17, 4 }, // GNB
-                {6 , 5 }, // WHM
-                {9 , 6 }, // SCH
-                {13, 7}, // AST
-                {20 , 8 }, // SGE
-                {2, 9 }, // MNK
-                {4 , 10 }, // DRG
-                {10 , 11 }, // NIN
-                {14 , 12 }, // SAM
-                {19 , 13 }, // RPR
-				{21, 20 }, // VPR
-				{5 , 14 }, // BRD
-                {11 , 15 }, // MCH
-                {18 , 16 }, // DNC
-                {7 , 17 }, // BLM
-                {8 , 18 }, // SMN
-                {15 , 19 }, // RDM
-				{22, 21 } // PCT
-            };
-
-			IEnumerable<CharRow> sortedCharaData = charDataList;
+			IEnumerable<STQEurekaCharRow> sortedCharaData = charDataList;
 
 			for (int i = 0; i < sortSpecs.SpecsCount; i++)
 			{
@@ -264,11 +224,11 @@ namespace ActionViewer.Functions
 					case charColumns.Job:
 						if (columnSortSpec.SortDirection == ImGuiSortDirection.Ascending)
 						{
-							sortedCharaData = sortedCharaData.OrderBy(o => jobSort.GetValueOrDefault(o.jobId));
+							sortedCharaData = sortedCharaData.OrderBy(o => o.jobSort);
 						}
 						else
 						{
-							sortedCharaData = sortedCharaData.OrderByDescending(o => jobSort.GetValueOrDefault(o.jobId));
+							sortedCharaData = sortedCharaData.OrderByDescending(o => o.jobSort);
 						}
 						break;
 					case charColumns.Name:

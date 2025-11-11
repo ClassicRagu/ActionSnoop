@@ -89,9 +89,14 @@ namespace ActionViewer
             }
         }
 
-		public static bool PlayerInRelevantTerritory()
-		{
-			return Plugin.territoryTypes.Contains(Services.ClientState.TerritoryType);
+		public bool PlayerInRelevantTerritory()
+        {
+            if(Configuration != null && !Configuration.UnrestrictZones){
+                return Plugin.territoryTypes.Contains(Services.ClientState.TerritoryType);
+            } else
+            {
+                return true;
+            }
 		}
 
 		public void Dispose()

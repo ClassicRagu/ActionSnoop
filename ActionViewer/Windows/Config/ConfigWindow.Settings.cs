@@ -20,6 +20,7 @@ public partial class ConfigWindow
             changed |= ImGui.Checkbox("Anonymous Mode", ref Plugin.Configuration.AnonymousMode);
 			changed |= ImGui.Checkbox("Tooltips", ref Plugin.Configuration.Tooltips);
 			changed |= ImGui.Checkbox("Target Range Limit", ref Plugin.Configuration.TargetRangeLimit);
+            changed |= ImGui.Checkbox("Unrestrict Zones", ref Plugin.Configuration.UnrestrictZones);
 
 			if (changed)
                 Plugin.Configuration.Save();

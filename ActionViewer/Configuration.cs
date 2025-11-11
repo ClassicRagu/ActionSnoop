@@ -13,6 +13,8 @@ namespace ActionViewer
 		public bool AnonymousMode = false;
         public bool TargetRangeLimit = true;
 
+        public bool UnrestrictZones = true;
+
 		// the below exist just to make saving less cumbersome
 
 		[NonSerialized]

@@ -1,15 +1,10 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
-
-namespace ActionViewer.Models
+﻿namespace ActionViewer.Models
 {
-    public class CharRow
+    public class STQEurekaCharRow : BaseCharRow
     {
-        public IPlayerCharacter character { get; set; }
-        public uint jobId { get; set; }
-        public string playerName { get; set; }
-        public StatusInfo statusInfo { get; set; }
+        public STQEurekaStatusInfo statusInfo { get; set; }
     }
-    public class StatusInfo
+    public class STQEurekaStatusInfo
     {
         public Lumina.Excel.Sheets.Action? leftLuminaStatusInfo { get; set; }
         public Lumina.Excel.Sheets.Action? rightLuminaStatusInfo { get; set; }

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ActionViewer.Tabs;
 
-public class GeneratedTab : MainWindowTab
+public class OverworldTab : MainWindowTab
 {
 	private string searchText = string.Empty;
 
@@ -28,15 +28,16 @@ public class GeneratedTab : MainWindowTab
 		}
 	}
 
-	public GeneratedTab(Plugin plugin, string tabType, List<uint>? jobList = null) : base(tabType, plugin) {
+	public OverworldTab(Plugin plugin, string tabType, List<uint>? jobList = null) : base(tabType, plugin) {
 		TabType = tabType;
 		JobList = jobList;
 	}
 
 	public override void Draw()
-	{
+    {
+        List<IPlayerCharacter> filteredCharacters = this.Plugin.Configuration.TargetRangeLimit ? PlayerCharacters.FindAll((x) => OCStatusInfoFunctions.IsInRange(x)) : PlayerCharacters;
+		ImGui.Text($"Total Characters: {filteredCharacters.Count.ToString()}");
 		ImGui.SetNextItemWidth(-1 * ImGui.GetIO().FontGlobalScale);
-		ImGui.InputText("", ref searchText, 256);
-		StatusInfoFunctions.GenerateStatusTable(PlayerCharacters, searchText, this.Plugin.Configuration, this.Plugin.BozjaCache, this.Plugin.EurekaAction, this.Plugin.ItemSheet, TabType == "No Ess." ? "noEss" : "none");
+		OverworldStatusInfoFunctions.GenerateStatusTable(filteredCharacters, this.Plugin.Configuration, TabType == "Dead" ? "Dead" : "none");
 	}
 }
