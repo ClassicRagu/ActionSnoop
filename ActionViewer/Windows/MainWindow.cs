@@ -22,7 +22,7 @@ public class MainWindow : Window
 	private static List<ushort> eurekaTerritories = new List<ushort>() { 795, 827 };
 	private List<uint> tanks = new List<uint>() { 1, 3, 12, 17 };
 	private List<uint> healers = new List<uint>() { 6, 9, 13, 20 };
-	private List<uint> casterDPS = new List<uint>() { 7, 8, 15, 22 };
+	private List<uint> casterDPS = new List<uint>() { 7, 8, 15, 22, 16 };
 	private List<uint> melee = new List<uint>() { 2, 4, 10, 14, 19, 21 };
 	private List<uint> physRanged = new List<uint>() { 5, 11, 18 };
 	private List<uint> xivClasses = new List<uint>() { 0 };

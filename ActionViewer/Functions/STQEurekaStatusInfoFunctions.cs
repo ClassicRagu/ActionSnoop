@@ -69,10 +69,10 @@ namespace ActionViewer.Functions
 			return statusInfo;
 		}
 
-		private static List<STQEurekaCharRow> GenerateRows(List<IPlayerCharacter> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, bool targetRangeLimit)
+		private static List<STQEurekaCharRow> GenerateRows(List<IBattleChara> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, bool targetRangeLimit)
 		{
 			List<STQEurekaCharRow> charRowList = new List<STQEurekaCharRow>();
-			foreach (IPlayerCharacter character in playerCharacters)
+			foreach (IBattleChara character in playerCharacters)
 			{
 				if (!targetRangeLimit || IsInRange(character))
 				{
@@ -88,7 +88,7 @@ namespace ActionViewer.Functions
 			return charRowList;
 		}
 
-		public static void GenerateStatusTable(List<IPlayerCharacter> playerCharacters, string searchText, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, string filter = "none")
+		public static void GenerateStatusTable(List<IBattleChara> playerCharacters, string searchText, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, string filter = "none")
 		{
 			ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable;// | ImGuiTableFlags.SizingFixedFit;
 			var iconSize = ImGui.GetTextLineHeight() * 2f;

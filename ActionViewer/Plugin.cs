@@ -30,7 +30,6 @@ namespace ActionViewer
         public readonly MainWindow MainWindow;
         public readonly ConfigWindow ConfigWindow;
         public Configuration Configuration { get; init; }
-        public IActionViewer ActionViewer { get; init; }
         public const string Authors = "boco-bot, ClassicRagu";
         public static readonly string Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
 		public readonly ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> BozjaCache;
@@ -60,8 +59,6 @@ namespace ActionViewer
 			this.EurekaAction = DataManager.GetExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction>();
 			this.ItemSheet = DataManager.GetExcelSheet<Lumina.Excel.Sheets.Item>();
             this.StatusSheet = DataManager.GetExcelSheet<Lumina.Excel.Sheets.Status>();
-
-			ActionViewer = new ActionViewer();
 
 			TerritoryChangePoll(Services.ClientState.TerritoryType);
 

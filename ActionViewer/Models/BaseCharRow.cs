@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
 
 namespace ActionViewer.Models
 {
 	public class BaseCharRow
 	{
-		public IPlayerCharacter character { get; set; }
+		public IBattleChara character { get; set; }
 		public uint jobId { get; set; }
 		public string playerName { get; set; }
 		public uint jobIconId {get

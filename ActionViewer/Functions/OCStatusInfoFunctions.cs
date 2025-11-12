@@ -43,10 +43,10 @@ namespace ActionViewer.Functions
 			return statusInfo;
 		}
 
-		private static List<OCCharRow> GenerateRows(List<IPlayerCharacter> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, bool targetRangeLimit)
+		private static List<OCCharRow> GenerateRows(List<IBattleChara> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, bool targetRangeLimit)
 		{
 			List<OCCharRow> charRowList = new List<OCCharRow>();
-			foreach (IPlayerCharacter character in playerCharacters)
+			foreach (IBattleChara character in playerCharacters)
 			{
 				// get player name, job ID, status list
 				OCCharRow row = new OCCharRow();
@@ -59,7 +59,7 @@ namespace ActionViewer.Functions
 			return charRowList;
 		}
 
-		public static void GenerateStatusTable(List<IPlayerCharacter> playerCharacters, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, bool inFT, string filter = "none")
+		public static void GenerateStatusTable(List<IBattleChara> playerCharacters, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, bool inFT, string filter = "none")
 		{
 			ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable;// | ImGuiTableFlags.SizingFixedFit;
 			var iconSize = ImGui.GetTextLineHeight() * 2f;
