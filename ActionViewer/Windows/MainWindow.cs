@@ -18,7 +18,7 @@ public class MainWindow : Window
      * 937 - DRS
      * 975 - Zadnor
      */
-	private List<ushort> territoryTypes = new List<ushort>() { 920, 936, 937, 975, 795, 827, 1252 };
+	private List<ushort> territoryTypes = new List<ushort>() { 920, 936, 937, 975, 795, 827 };
 	private static List<ushort> eurekaTerritories = new List<ushort>() { 795, 827 };
 	private List<uint> tanks = new List<uint>() { 1, 3, 12, 17 };
 	private List<uint> healers = new List<uint>() { 6, 9, 13, 20 };
