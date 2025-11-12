@@ -19,10 +19,10 @@ namespace ActionViewer.Functions
             return target != null && target.YalmDistanceX < 50;
         }
 
-        private static List<BaseCharRow> GenerateRows(List<IPlayerCharacter> playerCharacters)
+        private static List<BaseCharRow> GenerateRows(List<IBattleChara> playerCharacters)
         {
             List<BaseCharRow> charRowList = new List<BaseCharRow>();
-            foreach (IPlayerCharacter character in playerCharacters)
+            foreach (IBattleChara character in playerCharacters)
             {
                 // get player name, job ID, status list
                 BaseCharRow row = new BaseCharRow();
@@ -34,7 +34,7 @@ namespace ActionViewer.Functions
             return charRowList;
         }
 
-        public static void GenerateStatusTable(List<IPlayerCharacter> playerCharacters, Configuration configuration, string filter = "none")
+        public static void GenerateStatusTable(List<IBattleChara> playerCharacters, Configuration configuration, string filter = "none")
         {
             ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable;// | ImGuiTableFlags.SizingFixedFit;
             var iconSize = ImGui.GetTextLineHeight() * 2f;
@@ -54,10 +54,7 @@ namespace ActionViewer.Functions
 
                 foreach (BaseCharRow row in charRowList)
                 {
-
-                    if (filter == "none" ||
-                        (filter == "Dead" && row.character.IsDead)
-                        )
+                    if (filter == "none" || (filter == "Dead" && row.character.IsDead))
                     {
                         // player job, name
                         ImGui.TableNextColumn();

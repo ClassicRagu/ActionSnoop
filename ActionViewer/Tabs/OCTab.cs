@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Bindings.ImGui;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.Types;
 
 namespace ActionViewer.Tabs;
 
@@ -11,17 +12,17 @@ public class OCTab : MainWindowTab
 {
 	public string TabType { get; set; }
 	public List<uint>? JobList { get; set; }
-	public List<IPlayerCharacter> PlayerCharacters
+	public List<IBattleChara> PlayerCharacters
 	{
 		get
 		{
 			if (JobList == null)
 			{
-				return this.Plugin.ActionViewer.getPlayerCharacters();
+				return Services.Objects.PlayerObjects.ToList();
 			}
 			else
 			{
-				return this.Plugin.ActionViewer.getPlayerCharacters().Where(x => JobList.Contains((uint)x.ClassJob.Value.JobIndex)).ToList();
+				return Services.Objects.PlayerObjects.Where(x => JobList.Contains((uint)x.ClassJob.Value.JobIndex)).ToList();
 			}
 		}
 	}
@@ -34,7 +35,7 @@ public class OCTab : MainWindowTab
 
 	public override void Draw()
 	{
-		List<IPlayerCharacter> filteredCharacters = this.Plugin.Configuration.TargetRangeLimit ? PlayerCharacters.FindAll((x) => OCStatusInfoFunctions.IsInRange(x)) : PlayerCharacters;
+		List<IBattleChara> filteredCharacters = this.Plugin.Configuration.TargetRangeLimit ? PlayerCharacters.FindAll((x) => OCStatusInfoFunctions.IsInRange(x)) : PlayerCharacters;
 		bool inFT = Services.ClientState.LocalPlayer != null && Services.ClientState.LocalPlayer.Position.Y < -30;
 		ImGui.Text($"Total Characters: {filteredCharacters.Count.ToString()}");
 		ImGui.SetNextItemWidth(-1 * ImGui.GetIO().FontGlobalScale);

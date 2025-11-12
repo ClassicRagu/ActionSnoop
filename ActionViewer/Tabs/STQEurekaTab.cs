@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Bindings.ImGui;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.Types;
 
 namespace ActionViewer.Tabs;
 
@@ -13,17 +14,17 @@ public class STQEurekaTab : MainWindowTab
 
 	public string TabType { get; set; }
 	public List<uint>? JobList { get; set; }
-	public List<IPlayerCharacter> PlayerCharacters
+	public List<IBattleChara> PlayerCharacters
 	{
 		get
 		{
 			if (JobList == null)
 			{
-				return this.Plugin.ActionViewer.getPlayerCharacters();
+				return Services.Objects.PlayerObjects.ToList();
 			}
 			else
 			{
-				return this.Plugin.ActionViewer.getPlayerCharacters().Where(x => JobList.Contains((uint)x.ClassJob.Value.JobIndex)).ToList();
+				return Services.Objects.PlayerObjects.Where(x => JobList.Contains((uint)x.ClassJob.Value.JobIndex)).ToList();
 			}
 		}
 	}
