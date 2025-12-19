@@ -23,7 +23,7 @@ namespace ActionViewer.Functions
 		{
 			OCStatusInfo statusInfo = new OCStatusInfo();
 
-			foreach (Status status in statusList)
+			foreach (IStatus status in statusList)
 			{
 				uint statusId = status.StatusId;
 				if ((statusId >= 4358 && statusId <= 4369) || statusId == 4242)

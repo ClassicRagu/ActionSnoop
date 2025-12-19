@@ -26,7 +26,7 @@ namespace ActionViewer.Functions
 		{
 			STQEurekaStatusInfo statusInfo = new STQEurekaStatusInfo();
 
-			foreach (Status status in statusList)
+			foreach (IStatus status in statusList)
 			{
 				int statusId = (int)status.StatusId;
 				if (essenceIds.Contains(statusId))
