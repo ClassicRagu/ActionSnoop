@@ -36,7 +36,7 @@ namespace ActionViewer.Functions
 
         public static void GenerateStatusTable(List<IBattleChara> playerCharacters, Configuration configuration, string filter = "none")
         {
-            ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable;// | ImGuiTableFlags.SizingFixedFit;
+            ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable | ImGuiTableFlags.ScrollY;// | ImGuiTableFlags.SizingFixedFit;
             var iconSize = ImGui.GetTextLineHeight() * 2f;
             var iconSizeVec = new Vector2(iconSize, iconSize);
             int columnCount = 2;
@@ -46,37 +46,44 @@ namespace ActionViewer.Functions
 
             if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
             {
+                ImGui.TableSetupScrollFreeze(1, 1);
                 ImGui.TableSetupColumn("Job", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Job);
                 ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.PreferSortDescending, 1f, (int)charColumns.Name);
                 ImGui.TableHeadersRow();
                 ImGuiTableSortSpecsPtr sortSpecs = ImGui.TableGetSortSpecs();
                 charRowList = SortCharDataWithSortSpecs(sortSpecs, charRowList);
+                var clipper = new ImGuiListClipper();
+                clipper.Begin(charRowList.Count, 0);
 
-                foreach (BaseCharRow row in charRowList)
+                while (clipper.Step())
                 {
-                    if (filter == "none" || (filter == "Dead" && row.character.IsDead))
+                    for (var i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
                     {
-                        // player job, name
-                        ImGui.TableNextColumn();
-
-                        ImGui.Image(
-                            Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.jobIconId)).GetWrapOrEmpty().Handle,
-                            iconSizeVec, Vector2.Zero, Vector2.One);
-                        var hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
-                        var left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
-                        if (left)
+                        var row = charRowList[i];
+                        if (filter == "none" || (filter == "Dead" && row.character.IsDead))
                         {
-                            Plugin.TargetManager.Target = row.character;
-                        }
-                        if (!configuration.AnonymousMode)
-                        {
+                            // player job, name
                             ImGui.TableNextColumn();
-                            ImGui.Selectable(row.playerName, false);
-                            hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
-                            left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
+
+                            ImGui.Image(
+                                Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.jobIconId)).GetWrapOrEmpty().Handle,
+                                iconSizeVec, Vector2.Zero, Vector2.One);
+                            var hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
+                            var left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
                             if (left)
                             {
                                 Plugin.TargetManager.Target = row.character;
+                            }
+                            if (!configuration.AnonymousMode)
+                            {
+                                ImGui.TableNextColumn();
+                                ImGui.Selectable(row.playerName, false);
+                                hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
+                                left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
+                                if (left)
+                                {
+                                    Plugin.TargetManager.Target = row.character;
+                                }
                             }
                         }
                     }

@@ -90,7 +90,7 @@ namespace ActionViewer.Functions
 
 		public static void GenerateStatusTable(List<IBattleChara> playerCharacters, string searchText, Configuration configuration, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet, string filter = "none")
 		{
-			ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable;// | ImGuiTableFlags.SizingFixedFit;
+			ImGuiTableFlags tableFlags = ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.Sortable | ImGuiTableFlags.ScrollY;// | ImGuiTableFlags.SizingFixedFit;
 			var iconSize = ImGui.GetTextLineHeight() * 2f;
 			var iconSizeVec = new Vector2(iconSize, iconSize);
 			bool eurekaTerritory = eurekaTerritories.Contains(Services.ClientState.TerritoryType);
@@ -102,6 +102,7 @@ namespace ActionViewer.Functions
 
 			if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
 			{
+				ImGui.TableSetupScrollFreeze(1, 1);
 				ImGui.TableSetupColumn("Job", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Job);
 				if (!configuration.AnonymousMode)
 				{
@@ -121,80 +122,85 @@ namespace ActionViewer.Functions
 				ImGui.TableHeadersRow();
 				ImGuiTableSortSpecsPtr sortSpecs = ImGui.TableGetSortSpecs();
 				charRowList = SortCharDataWithSortSpecs(sortSpecs, charRowList);
+				var clipper = new ImGuiListClipper();
+				clipper.Begin(charRowList.Count, 0);
 
-				foreach (STQEurekaCharRow row in charRowList)
+				while (clipper.Step())
 				{
-
-					if ((searchText == string.Empty ||
+					for (var i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+					{
+						var row = charRowList[i];
+						if ((searchText == string.Empty ||
 							(row.statusInfo.rightIconID != 33 && (row.statusInfo.rightLuminaStatusInfo.Value.Name.ExtractText().ToLowerInvariant().IndexOf(searchText.ToLowerInvariant()) != -1)) ||
 							(row.statusInfo.leftIconID != 33 && (row.statusInfo.leftLuminaStatusInfo.Value.Name.ExtractText().ToLowerInvariant().IndexOf(searchText.ToLowerInvariant()) != -1))) &&
-						(filter == "none" || 
+						(filter == "none" ||
 						// in DR we want to also filter out non-pure essences. Gambler is luckily the first pure essence by ID so it's easy to filter
 						(filter == "noEss" && (row.statusInfo.essenceIconID == 26 || (delubrumTerritory && row.statusInfo.essenceId < 2435))))
 						)
-					{
-
-						// player job, name
-						ImGui.TableNextColumn();
-
-						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.jobIconId)).GetWrapOrEmpty().Handle,
-							iconSizeVec, Vector2.Zero, Vector2.One);
-						var hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
-						var left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
-						if (left)
 						{
-							Plugin.TargetManager.Target = row.character;
-						}
-						if (!configuration.AnonymousMode)
-						{
+
+							// player job, name
 							ImGui.TableNextColumn();
-							ImGui.Selectable(row.playerName, false);
-							hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
-							left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
+
+							ImGui.Image(
+								Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.jobIconId)).GetWrapOrEmpty().Handle,
+								iconSizeVec, Vector2.Zero, Vector2.One);
+							var hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
+							var left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
 							if (left)
 							{
 								Plugin.TargetManager.Target = row.character;
 							}
-						}
+							if (!configuration.AnonymousMode)
+							{
+								ImGui.TableNextColumn();
+								ImGui.Selectable(row.playerName, false);
+								hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
+								left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
+								if (left)
+								{
+									Plugin.TargetManager.Target = row.character;
+								}
+							}
 
-						// reraiser
-						ImGui.TableNextColumn();
-						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.reraiserIconID)).GetWrapOrEmpty().Handle,
-							new Vector2(iconSize * (float)0.8, iconSize));
-
-						if (!eurekaTerritory)
-						{
-							// essence
+							// reraiser
 							ImGui.TableNextColumn();
 							ImGui.Image(
-								Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.essenceIconID)).GetWrapOrEmpty().Handle,
-								iconSizeVec, Vector2.Zero, Vector2.One);
-							if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) && row.statusInfo.essenceName != null)
+								Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.reraiserIconID)).GetWrapOrEmpty().Handle,
+								new Vector2(iconSize * (float)0.8, iconSize));
+
+							if (!eurekaTerritory)
 							{
-								ImGui.SetTooltip(row.statusInfo.essenceName);
+								// essence
+								ImGui.TableNextColumn();
+								ImGui.Image(
+									Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.essenceIconID)).GetWrapOrEmpty().Handle,
+									iconSizeVec, Vector2.Zero, Vector2.One);
+								if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) && row.statusInfo.essenceName != null)
+								{
+									ImGui.SetTooltip(row.statusInfo.essenceName);
+								}
 							}
-						}
 
-						// left/right actions
-						ImGui.TableNextColumn();
-						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.leftIconID)).GetWrapOrEmpty().Handle,
-							iconSizeVec, Vector2.Zero, Vector2.One);
-						if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) && row.statusInfo.leftLuminaStatusInfo != null)
-						{
-							ImGui.SetTooltip(row.statusInfo.leftLuminaStatusInfo.Value.Name.ExtractText());
+							// left/right actions
+							ImGui.TableNextColumn();
+							ImGui.Image(
+								Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.leftIconID)).GetWrapOrEmpty().Handle,
+								iconSizeVec, Vector2.Zero, Vector2.One);
+							if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) && row.statusInfo.leftLuminaStatusInfo != null)
+							{
+								ImGui.SetTooltip(row.statusInfo.leftLuminaStatusInfo.Value.Name.ExtractText());
 
-						}
-						ImGui.TableNextColumn();
-						ImGui.Image(
-							Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.rightIconID)).GetWrapOrEmpty().Handle,
-							iconSizeVec, Vector2.Zero, Vector2.One);
-						if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) && row.statusInfo.rightLuminaStatusInfo != null)
-						{
-							ImGui.SetTooltip(row.statusInfo.rightLuminaStatusInfo.Value.Name.ExtractText());
+							}
+							ImGui.TableNextColumn();
+							ImGui.Image(
+								Plugin.TextureProvider.GetFromGameIcon(new GameIconLookup(row.statusInfo.rightIconID)).GetWrapOrEmpty().Handle,
+								iconSizeVec, Vector2.Zero, Vector2.One);
+							if (configuration.Tooltips && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled) && row.statusInfo.rightLuminaStatusInfo != null)
+							{
+								ImGui.SetTooltip(row.statusInfo.rightLuminaStatusInfo.Value.Name.ExtractText());
 
+							}
 						}
 					}
 				}
