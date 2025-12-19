@@ -26,7 +26,7 @@ namespace ActionViewer.Functions
 			foreach (IStatus status in statusList)
 			{
 				uint statusId = status.StatusId;
-				if ((statusId >= 4358 && statusId <= 4369) || statusId == 4242)
+				if ((statusId >= 4358 && statusId <= 4369) || statusId == 4242 || (statusId >= 4803 && statusId <= 4805))
 				{
 					statusInfo.jobLevel = (ushort)(status.Param % 256);
 					statusInfo.phantomJob = statusSheet.GetRow(statusId);
