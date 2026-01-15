@@ -110,7 +110,7 @@ namespace ActionViewer.Functions
 						{
 							var row = charRowList[i];
 							if (filter == "none" ||
-							(filter == "Dead Chemist" && row.statusInfo.phantomJob.Value.RowId == 4367 && row.character.IsDead)
+							(filter == "Dead Chemist" && row.statusInfo.phantomJob != null && row.statusInfo.phantomJob.Value.RowId == 4367 && row.character.IsDead)
 							)
 							{
 								// player job, name
