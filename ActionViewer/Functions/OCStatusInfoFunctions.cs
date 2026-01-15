@@ -240,7 +240,7 @@ namespace ActionViewer.Functions
 					ListCharacters(geomancers);
 					ImGui.TextColored(timeMages.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Time Mages: {timeMages.Count}/2");
 					ListCharacters(timeMages);
-					ImGui.TextColored(thiefs.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Thiefs: {thiefs.Count}/2");
+					ImGui.TextColored(thiefs.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Thieves: {thiefs.Count}/2");
 					ListCharacters(thiefs);
 					ImGui.TextColored(rangers.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Rangers: {rangers.Count}/2");
 					ListCharacters(rangers);
