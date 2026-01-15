@@ -170,6 +170,8 @@ namespace ActionViewer.Functions
 				else
 				{
 					// we could do a find all but just process them all at once
+					// we should make this code suck less eventually but the feature is useful
+					// and this doesn't affect performance so just leaving it as is until a later refactor.
 					var geomancers = new List<OCCharRow>();
 					ushort geomancerLevelReq = 4;
 					var timeMages = new List<OCCharRow>();
