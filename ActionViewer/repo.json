@@ -5,8 +5,8 @@
     "InternalName": "actionViewer",
     "Punchline": "View Forays-related info of nearby players",
     "Description": "Use /av to view Forays-related info of nearby players",
-    "AssemblyVersion": "0.7.0.2",
-    "TestingAssemblyVersion": "0.7.0.2",
+    "AssemblyVersion": "0.7.1.0",
+    "TestingAssemblyVersion": "0.7.1.0",
     "RepoUrl": "https://github.com/ClassicRagu/ActionSnoop",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 14,
@@ -14,8 +14,8 @@
       "stq"
     ],
     "IconUrl": "https://raw.githubusercontent.com/ClassicRagu/ActionSnoop/main/ActionViewer/images/icon.png",
-    "DownloadLinkInstall": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.7.0.2/latest.zip",
-    "DownloadLinkTesting": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.7.0.2/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.7.0.2/latest.zip"
+    "DownloadLinkInstall": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.7.1.0/latest.zip",
+    "DownloadLinkTesting": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.7.1.0/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/ClassicRagu/ActionSnoop/releases/download/v0.7.1.0/latest.zip"
   }
 ]
