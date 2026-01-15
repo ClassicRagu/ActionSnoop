@@ -70,7 +70,7 @@ public class MainWindow : Window
 			this.tabs = new List<MainWindowTab>
 			{
 				new OCTab(this.plugin, "Main"),
-				new OCTab(this.plugin, "FL"),
+				new OCTab(this.plugin, "FT"),
 				new OCTab(this.plugin, "Dead Chemist"),
 				new OCTab(this.plugin, "Tanks", tanks),
 				new OCTab(this.plugin, "Healers", healers),
