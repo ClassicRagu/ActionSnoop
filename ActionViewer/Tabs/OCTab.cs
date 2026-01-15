@@ -39,6 +39,6 @@ public class OCTab : MainWindowTab
 		bool inFT = Services.ClientState.LocalPlayer != null && Services.ClientState.LocalPlayer.Position.Y < -30;
 		ImGui.Text($"Total Characters: {filteredCharacters.Count.ToString()}");
 		ImGui.SetNextItemWidth(-1 * ImGui.GetIO().FontGlobalScale);
-		OCStatusInfoFunctions.GenerateStatusTable(filteredCharacters, this.Plugin.Configuration, this.Plugin.StatusSheet, inFT, TabType == "FL" ? "FL" : TabType == "Dead Chemist" ? "Dead Chemist" : "none");
+		OCStatusInfoFunctions.GenerateStatusTable(filteredCharacters, this.Plugin.Configuration, this.Plugin.StatusSheet, inFT, TabType == "FT" ? "FT" : TabType == "Dead Chemist" ? "Dead Chemist" : "none");
 	}
 }

@@ -80,7 +80,13 @@ namespace ActionViewer.Functions
 		{
 			foreach (OCCharRow ocChar in ocCharRows)
 			{
-				ImGui.Text(ocChar.character.Name.ToString());
+				ImGui.Selectable(ocChar.playerName, false);
+				var hover = ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled);
+				var left = hover && ImGui.IsMouseClicked(ImGuiMouseButton.Left);
+				if (left)
+				{
+					Plugin.TargetManager.Target = ocChar.character;
+				}
 			}
 		}
 
@@ -93,7 +99,7 @@ namespace ActionViewer.Functions
 
 
 			List<OCCharRow> charRowList = GenerateRows(playerCharacters, statusSheet, configuration.TargetRangeLimit);
-			if (filter != "FL")
+			if (filter != "FT")
 			{
 
 				if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
