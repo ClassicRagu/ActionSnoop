@@ -195,6 +195,8 @@ namespace ActionViewer.Functions
 					var cannonDancer = new List<OCCharRow>();
 					ushort dancerLevelReq = 4;
 					ushort cannoneerLevelReq = 6;
+					var chemist = new List<OCCharRow>();
+					ushort chemistLevelReq = 3;
 
 					foreach (OCCharRow ocChar in charRowList)
 					{
@@ -240,6 +242,10 @@ namespace ActionViewer.Functions
 								case 4805:
 									if (jobLevel >= dancerLevelReq) cannonDancer.Add(ocChar);
 									break;
+								// Dancer
+								case 4367:
+									if (jobLevel >= chemistLevelReq) chemist.Add(ocChar);
+									break;
 							}
 						}
 					}
@@ -256,6 +262,8 @@ namespace ActionViewer.Functions
 					ListCharacters(berserkers);
 					ImGui.TextColored(bards.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Bards: {bards.Count}/2");
 					ListCharacters(bards);
+					ImGui.TextColored(chemist.Count > 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Chemists: {chemist.Count}/1");
+					ListCharacters(chemist);
 					ImGui.TextColored(mysticKnights.Count == 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Mystic Knights: {mysticKnights.Count}/1");
 					ListCharacters(mysticKnights);
 					ImGui.TextColored(cannonDancer.Count == 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Dancers and Cannoneers: {cannonDancer.Count}/1");
