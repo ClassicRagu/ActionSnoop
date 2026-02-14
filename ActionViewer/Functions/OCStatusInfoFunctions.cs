@@ -262,7 +262,7 @@ namespace ActionViewer.Functions
 					ListCharacters(berserkers);
 					ImGui.TextColored(bards.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Bards: {bards.Count}/2");
 					ListCharacters(bards);
-					ImGui.TextColored(chemist.Count > 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Chemists: {chemist.Count}/1");
+					ImGui.TextColored(chemist.Count >= 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Chemists: {chemist.Count}/1");
 					ListCharacters(chemist);
 					ImGui.TextColored(mysticKnights.Count == 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Mystic Knights: {mysticKnights.Count}/1");
 					ListCharacters(mysticKnights);
