@@ -3,7 +3,7 @@
   "Name": "Action Viewer",
   "Punchline": "View Forays-related info of nearby players",
   "Description": "Use /av to view Forays-related info of nearby players",
-  "InternalName": "actionViewer",
+  "InternalName": "ActionViewer",
   "ApplicableVersion": "any",
   "Tags": [
     "stq"
