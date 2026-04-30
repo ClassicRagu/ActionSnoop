@@ -36,7 +36,7 @@ public class OCTab : MainWindowTab
 	public override void Draw()
 	{
 		List<IBattleChara> filteredCharacters = this.Plugin.Configuration.TargetRangeLimit ? PlayerCharacters.FindAll((x) => OCStatusInfoFunctions.IsInRange(x)) : PlayerCharacters;
-		bool inFT = Services.ClientState.LocalPlayer != null && Services.ClientState.LocalPlayer.Position.Y < -30;
+		bool inFT = Services.ObjectTable.LocalPlayer != null && Services.ObjectTable.LocalPlayer.Position.Y < -30;
 		ImGui.Text($"Total Characters: {filteredCharacters.Count.ToString()}");
 		ImGui.SetNextItemWidth(-1 * ImGui.GetIO().FontGlobalScale);
 		OCStatusInfoFunctions.GenerateStatusTable(filteredCharacters, this.Plugin.Configuration, this.Plugin.StatusSheet, inFT, TabType == "FT" ? "FT" : TabType == "Dead Chemist" ? "Dead Chemist" : "none");

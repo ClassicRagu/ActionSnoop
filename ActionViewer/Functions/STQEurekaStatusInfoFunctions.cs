@@ -19,8 +19,8 @@ namespace ActionViewer.Functions
 			return target != null && target.YalmDistanceX < 50;
 		}
 
-		private static List<ushort> eurekaTerritories = new List<ushort>() { 795, 827 };
-		private static List<ushort> delubrumTerritories = new List<ushort>() { 936, 937 };
+		private static List<uint> eurekaTerritories = new List<uint>() { 795, 827 };
+		private static List<uint> delubrumTerritories = new List<uint>() { 936, 937 };
 		private static List<int> essenceIds = new List<int>() { 2311, 2312, 2313, 2314, 2315, 2316, 2317, 2318, 2319, 2320, 2321, 2322, 2323, 2324, 2325, 2434, 2435, 2436, 2437, 2438, 2439, };
 		private static STQEurekaStatusInfo GetStatusInfo(StatusList statusList, ExcelSheet<Lumina.Excel.Sheets.MYCTemporaryItem> bozjaCache, ExcelSheet<Lumina.Excel.Sheets.EurekaMagiaAction> eurekaAction, ExcelSheet<Lumina.Excel.Sheets.Item> itemSheet)
 		{
@@ -103,22 +103,22 @@ namespace ActionViewer.Functions
 			if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
 			{
 				ImGui.TableSetupScrollFreeze(1, 1);
-				ImGui.TableSetupColumn("Job", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Job);
+				ImGui.TableSetupColumn("Job", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Job);
 				if (!configuration.AnonymousMode)
 				{
 					ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.PreferSortDescending, 1f, (int)charColumns.Name);
 				}
 				if (!eurekaTerritory)
 				{
-					ImGui.TableSetupColumn("RR", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.Reraiser);
-					ImGui.TableSetupColumn("Ess.", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Essence);
+					ImGui.TableSetupColumn("RR", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Reraiser);
+					ImGui.TableSetupColumn("Ess.", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Essence);
 				}
 				else
 				{
-					ImGui.TableSetupColumn("Remembered", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.Reraiser);
+					ImGui.TableSetupColumn("SotR", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Reraiser);
 				}
-				ImGui.TableSetupColumn("Left", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Left);
-				ImGui.TableSetupColumn("Right", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Right);
+				ImGui.TableSetupColumn("Left", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Left);
+				ImGui.TableSetupColumn("Right", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Right);
 				ImGui.TableHeadersRow();
 				ImGuiTableSortSpecsPtr sortSpecs = ImGui.TableGetSortSpecs();
 				charRowList = charRowList.Where(row => (searchText == string.Empty ||

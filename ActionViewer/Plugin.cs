@@ -19,7 +19,7 @@ namespace ActionViewer
         private const string commandName = "/av";
         private const string configCommandName = "/avcfg";
 
-		private static List<ushort> territoryTypes = new List<ushort>() { 920, 936, 937, 975, 795, 827, 1252 };
+		private static List<uint> territoryTypes = new List<uint>() { 920, 936, 937, 975, 795, 827, 1252 };
 		[PluginService] public static ITargetManager TargetManager { get; private set; } = null!;
 
         [PluginService] public static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
@@ -78,7 +78,7 @@ namespace ActionViewer
             //Services.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
         }
 
-        private void TerritoryChangePoll(ushort territoryId)
+        private void TerritoryChangePoll(uint territoryId)
         {
             if (PlayerInRelevantTerritory())
             {

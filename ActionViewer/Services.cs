@@ -21,6 +21,9 @@ namespace ActionViewer
         public static IClientState ClientState { get; private set; } = null!;
 
         [PluginService]
+        public static IObjectTable ObjectTable { get; private set; } = null!;
+
+        [PluginService]
         public static IChatGui Chat { get; private set; } = null!;
         [PluginService]
         public static IDataManager DataManager { get; private set; } = null;

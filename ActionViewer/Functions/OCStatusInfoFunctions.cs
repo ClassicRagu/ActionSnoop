@@ -63,12 +63,12 @@ namespace ActionViewer.Functions
 		private static void InitializeOCTable(bool inFT, bool anonymousMode)
 		{
 			ImGui.TableSetupScrollFreeze(1, 1);
-			ImGui.TableSetupColumn("Job", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Job);
-			ImGui.TableSetupColumn("PJ", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.PJ);
-			ImGui.TableSetupColumn("Lv", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.Lv);
-			ImGui.TableSetupColumn("PM", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.PM);
+			ImGui.TableSetupColumn("Job", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Job);
+			ImGui.TableSetupColumn("PJ", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.PJ);
+			ImGui.TableSetupColumn("Lv", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Lv);
+			ImGui.TableSetupColumn("PM", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.PM);
 			if (inFT)
-				ImGui.TableSetupColumn("RR", ImGuiTableColumnFlags.WidthFixed, 28f, (int)charColumns.RR);
+				ImGui.TableSetupColumn("RR", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.RR);
 			if (!anonymousMode)
 			{
 				ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.PreferSortDescending, 1f, (int)charColumns.Name);

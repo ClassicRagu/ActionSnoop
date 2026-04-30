@@ -47,7 +47,7 @@ namespace ActionViewer.Functions
             if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
             {
                 ImGui.TableSetupScrollFreeze(1, 1);
-                ImGui.TableSetupColumn("Job", ImGuiTableColumnFlags.WidthFixed, 34f, (int)charColumns.Job);
+                ImGui.TableSetupColumn("Job", ImGuiTableColumnFlags.WidthFixed, 0, (int)charColumns.Job);
                 ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.PreferSortDescending, 1f, (int)charColumns.Name);
                 ImGui.TableHeadersRow();
                 ImGuiTableSortSpecsPtr sortSpecs = ImGui.TableGetSortSpecs();
