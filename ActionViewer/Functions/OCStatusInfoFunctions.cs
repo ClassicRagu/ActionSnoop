@@ -27,7 +27,7 @@ namespace ActionViewer.Functions
 			foreach (IStatus status in statusList)
 			{
 				uint statusId = status.StatusId;
-				if ((statusId >= 4358 && statusId <= 4369) || statusId == 4242 || (statusId >= 4803 && statusId <= 4805))
+				if ((statusId >= 4358 && statusId <= 4369) || statusId == 4242 || (statusId >= 4803 && statusId <= 4805) || (statusId >= 5328 && statusId <= 5335))
 				{
 					statusInfo.jobLevel = (ushort)(status.Param % 256);
 					statusInfo.phantomJob = statusSheet.GetRow(statusId);
@@ -116,7 +116,7 @@ namespace ActionViewer.Functions
 						{
 							var row = charRowList[i];
 							if (filter == "none" ||
-							(filter == "Dead Chemist" && row.statusInfo.phantomJob != null && row.statusInfo.phantomJob.Value.RowId == 4367 && row.character.IsDead)
+							(filter == "Dead Chemist" && row.statusInfo.phantomJob != null && (row.statusInfo.phantomJob.Value.RowId == 4367 || row.statusInfo.phantomJob.Value.RowId == 5329) && row.character.IsDead)
 							)
 							{
 								// player job, name
@@ -197,6 +197,7 @@ namespace ActionViewer.Functions
 					ushort cannoneerLevelReq = 6;
 					var chemist = new List<OCCharRow>();
 					ushort chemistLevelReq = 3;
+					ushort whiteMageLevelReq = 4;
 
 					foreach (OCCharRow ocChar in charRowList)
 					{
@@ -246,6 +247,10 @@ namespace ActionViewer.Functions
 								case 4367:
 									if (jobLevel >= chemistLevelReq) chemist.Add(ocChar);
 									break;
+								// White Mage
+								case 5329:
+									if (jobLevel >= whiteMageLevelReq) chemist.Add(ocChar);
+									break;
 							}
 						}
 					}
@@ -262,7 +267,7 @@ namespace ActionViewer.Functions
 					ListCharacters(berserkers);
 					ImGui.TextColored(bards.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Bards: {bards.Count}/2");
 					ListCharacters(bards);
-					ImGui.TextColored(chemist.Count >= 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Chemists: {chemist.Count}/1");
+					ImGui.TextColored(chemist.Count >= 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Chemists/WHM: {chemist.Count}/1");
 					ListCharacters(chemist);
 					ImGui.TextColored(mysticKnights.Count == 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Mystic Knights: {mysticKnights.Count}/1");
 					ListCharacters(mysticKnights);

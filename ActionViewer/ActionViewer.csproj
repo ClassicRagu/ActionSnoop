@@ -10,7 +10,7 @@
   <PropertyGroup>
     <Authors></Authors>
     <Company></Company>
-    <Version>0.7.3.1</Version>
+    <Version>0.7.4.0</Version>
     <Description>ActionSnoop plugin.</Description>
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/boco-bot/ActionSnoop</PackageProjectUrl>

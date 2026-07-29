@@ -20,6 +20,7 @@ public class MainWindow : Window
      */
 	private List<uint> territoryTypes = new List<uint>() { 920, 936, 937, 975, 795, 827 };
 	private static List<uint> eurekaTerritories = new List<uint>() { 795, 827 };
+	private static List<uint> ocTerritories = new List<uint>() { 1252, 1346 };
 	private List<uint> tanks = new List<uint>() { 1, 3, 12, 17 };
 	private List<uint> healers = new List<uint>() { 6, 9, 13, 20 };
 	private List<uint> casterDPS = new List<uint>() { 7, 8, 15, 22, 16 };
@@ -65,7 +66,7 @@ public class MainWindow : Window
 			new STQEurekaTab(this.plugin, "Caster", casterDPS),
 			new STQEurekaTab(this.plugin, "Classes", xivClasses),
 			};
-		} else if (Services.ClientState.TerritoryType == 1252)
+		} else if (ocTerritories.Contains(Services.ClientState.TerritoryType))
 		{
 			this.tabs = new List<MainWindowTab>
 			{
