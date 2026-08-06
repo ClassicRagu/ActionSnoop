@@ -116,7 +116,8 @@ namespace ActionViewer.Functions
 						{
 							var row = charRowList[i];
 							if (filter == "none" ||
-							(filter == "Dead Chemist" && row.statusInfo.phantomJob != null && (row.statusInfo.phantomJob.Value.RowId == 4367 || row.statusInfo.phantomJob.Value.RowId == 5329) && row.character.IsDead)
+							(filter == "Dead Chemist" && row.statusInfo.phantomJob != null && (row.statusInfo.phantomJob.Value.RowId == 4367 || row.statusInfo.phantomJob.Value.RowId == 5329) && row.character.IsDead) ||
+							(filter == "Res" && row.character.IsDead && (!inFT || row.statusInfo.resStacks > 0))
 							)
 							{
 								// player job, name

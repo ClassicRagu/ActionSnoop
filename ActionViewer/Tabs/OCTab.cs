@@ -26,10 +26,12 @@ public class OCTab : MainWindowTab
 			}
 		}
 	}
+	
+	private List<string> SpecialTabs = new List<string>() { "FT", "Dead Chemist", "Res" };
 
 	public OCTab(Plugin plugin, string tabType, List<uint>? jobList = null) : base(tabType, plugin)
 	{
-		TabType = tabType;
+		TabType = SpecialTabs.Contains(tabType) ? tabType : "none";
 		JobList = jobList;
 	}
 
@@ -39,6 +41,6 @@ public class OCTab : MainWindowTab
 		bool inFT = Services.ObjectTable.LocalPlayer != null && Services.ObjectTable.LocalPlayer.Position.Y < -30;
 		ImGui.Text($"Total Characters: {filteredCharacters.Count.ToString()}");
 		ImGui.SetNextItemWidth(-1 * ImGui.GetIO().FontGlobalScale);
-		OCStatusInfoFunctions.GenerateStatusTable(filteredCharacters, this.Plugin.Configuration, this.Plugin.StatusSheet, inFT, TabType == "FT" ? "FT" : TabType == "Dead Chemist" ? "Dead Chemist" : "none");
+		OCStatusInfoFunctions.GenerateStatusTable(filteredCharacters, this.Plugin.Configuration, this.Plugin.StatusSheet, inFT, TabType);
 	}
 }
