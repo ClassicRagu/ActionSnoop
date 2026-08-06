@@ -44,7 +44,7 @@ namespace ActionViewer.Functions
 			return statusInfo;
 		}
 
-		private static List<OCCharRow> GenerateRows(List<IBattleChara> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, bool targetRangeLimit)
+		private static List<OCCharRow> GenerateRows(List<IBattleChara> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, string filter, bool inFT)
 		{
 			List<OCCharRow> charRowList = new List<OCCharRow>();
 			foreach (IBattleChara character in playerCharacters)
@@ -55,7 +55,19 @@ namespace ActionViewer.Functions
 				row.playerName = character.Name.ToString();
 				row.jobId = (uint)character.ClassJob.RowId;
 				row.statusInfo = GetStatusInfo(character.StatusList, statusSheet);
-				charRowList.Add(row);
+				switch (filter)
+				{
+					case "Res":
+						if (row.character.IsDead && (!inFT || row.statusInfo.resStacks > 0)) charRowList.Add(row);
+						break;
+					case "Dead Chemist":
+						if (row.statusInfo.phantomJob != null && (row.statusInfo.phantomJob.Value.RowId == 4367 || row.statusInfo.phantomJob.Value.RowId == 5329) && row.character.IsDead) charRowList.Add(row);
+						break;
+					default:
+						charRowList.Add(row);
+						break;
+				}
+
 			}
 			return charRowList;
 		}
@@ -98,7 +110,7 @@ namespace ActionViewer.Functions
 			int columnCount = inFT ? 6 : 5;
 
 
-			List<OCCharRow> charRowList = GenerateRows(playerCharacters, statusSheet, configuration.TargetRangeLimit);
+			List<OCCharRow> charRowList = GenerateRows(playerCharacters, statusSheet, filter, inFT);
 			if (filter != "FT")
 			{
 
@@ -115,10 +127,7 @@ namespace ActionViewer.Functions
 						for (var i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
 						{
 							var row = charRowList[i];
-							if (filter == "none" ||
-							(filter == "Dead Chemist" && row.statusInfo.phantomJob != null && (row.statusInfo.phantomJob.Value.RowId == 4367 || row.statusInfo.phantomJob.Value.RowId == 5329) && row.character.IsDead) ||
-							(filter == "Res" && row.character.IsDead && (!inFT || row.statusInfo.resStacks > 0))
-							)
+							if (filter == "none" || filter == "Dead Chemist" || filter == "Res")
 							{
 								// player job, name
 								ImGui.TableNextColumn();
