@@ -115,6 +115,10 @@ namespace ActionViewer.Functions
 			var iconSize = ImGui.GetTextLineHeight() * 2f;
 			var iconSizeVec = new Vector2(iconSize, iconSize);
 			int columnCount = inFT ? 6 : 5;
+			uint territory = Services.ClientState.TerritoryType;
+
+			int[] jobConfig = territory == 1252 ? configuration.SHJobs : configuration.Jobs;
+			bool[] jobConfigOverflow = territory == 1252 ? configuration.SHJobOverflow : configuration.JobOverflow;
 
 			Tuple<List<OCCharRow>, List<OCCharRow>[]> rowsOutput = GenerateRows(playerCharacters, statusSheet, filter, inFT);
 			List<OCCharRow> charRowList = rowsOutput.Item1;
@@ -198,7 +202,7 @@ namespace ActionViewer.Functions
 					// and this doesn't affect performance so just leaving it as is until a later refactor.
 					for (int i = 0; i < 24; i++)
 					{
-						if (configuration.Jobs[i] > 0)
+						if (jobConfig[i] > 0)
 						{
 							List<OCCharRow> oCCharRows = new List<OCCharRow>();
 							foreach (var OCJob in ocJobs[i])
@@ -208,7 +212,7 @@ namespace ActionViewer.Functions
 									oCCharRows.Add(OCJob);
 								}
 							}
-							ImGui.TextColored(oCCharRows.Count == configuration.Jobs[i] || (configuration.JobOverflow[i] && oCCharRows.Count > configuration.Jobs[i]) ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"{PJobMappings.pJobList[i]}: {oCCharRows.Count}/{configuration.Jobs[i]}");
+							ImGui.TextColored(oCCharRows.Count == jobConfig[i] || (jobConfigOverflow[i] && oCCharRows.Count > jobConfig[i]) ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"{PJobMappings.pJobList[i]}: {oCCharRows.Count}/{jobConfig[i]}");
 							ListCharacters(oCCharRows);
 						}
 					}

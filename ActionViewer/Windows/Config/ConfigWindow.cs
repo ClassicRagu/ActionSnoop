@@ -32,7 +32,9 @@ public partial class ConfigWindow : Window
         {
             Settings();
 
-            FTConfig();
+            FTBConfig();
+            
+            FTMConfig();
 
             About();
         }

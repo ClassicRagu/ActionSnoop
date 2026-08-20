@@ -12,9 +12,9 @@ public partial class ConfigWindow
 {
 
     // This file was taken mostly from Diadem Calculator by Infiziert90: https://github.com/Infiziert90/DiademCalculator
-    private void FTConfig()
+    private void FTBConfig()
     {
-        if (ImGui.BeginTabItem("FT"))
+        if (ImGui.BeginTabItem("FTB"))
         {
             var changed = false;
 
@@ -23,16 +23,16 @@ public partial class ConfigWindow
             ImGui.Columns(2, "Job Columns", false);
 
             
-            foreach (var ocjob in Plugin.Configuration.Jobs.Select((value, i) => (value, i)))
+            foreach (var ocjob in Plugin.Configuration.SHJobs.Select((value, i) => (value, i)))
             {
                 ImGui.SetNextItemWidth(width / 3f);
-                if (ImGui.InputInt(PJobMappings.pJobList[ocjob.i], ref Plugin.Configuration.Jobs[ocjob.i], 1))
+                if (ImGui.InputInt(PJobMappings.pJobList[ocjob.i], ref Plugin.Configuration.SHJobs[ocjob.i], 1))
                 {
-                    Plugin.Configuration.Jobs[ocjob.i] = Math.Clamp(Plugin.Configuration.Jobs[ocjob.i], 0, 48);
+                    Plugin.Configuration.SHJobs[ocjob.i] = Math.Clamp(Plugin.Configuration.SHJobs[ocjob.i], 0, 48);
                     changed = true;
                 }
                 ImGui.NextColumn();
-                changed |= ImGui.Checkbox($"{PJobMappings.pJobList[ocjob.i]} Allow Greater?", ref Plugin.Configuration.JobOverflow[ocjob.i]);
+                changed |= ImGui.Checkbox($"{PJobMappings.pJobList[ocjob.i]} Allow Greater?", ref Plugin.Configuration.SHJobOverflow[ocjob.i]);
                 ImGui.NextColumn();
             }
 
