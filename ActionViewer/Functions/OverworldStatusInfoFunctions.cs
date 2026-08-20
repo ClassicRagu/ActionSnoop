@@ -14,12 +14,7 @@ namespace ActionViewer.Functions
 {
     public static class OverworldStatusInfoFunctions
     {
-        public static bool IsInRange(IGameObject? target)
-        {
-            return target != null && target.YalmDistanceX < 50;
-        }
-
-        private static List<BaseCharRow> GenerateRows(List<IBattleChara> playerCharacters)
+        private static List<BaseCharRow> GenerateRows(List<IBattleChara> playerCharacters, string filter)
         {
             List<BaseCharRow> charRowList = new List<BaseCharRow>();
             foreach (IBattleChara character in playerCharacters)
@@ -29,7 +24,7 @@ namespace ActionViewer.Functions
                 row.character = character;
                 row.playerName = character.Name.ToString();
                 row.jobId = (uint)character.ClassJob.RowId; //(uint)character.ClassJob.Value.JobIndex;
-                charRowList.Add(row);
+                if(filter == "none" || (filter == "Dead" && row.character.IsDead)) charRowList.Add(row);
             }
             return charRowList;
         }
@@ -42,7 +37,7 @@ namespace ActionViewer.Functions
             int columnCount = 2;
 
 
-            List<BaseCharRow> charRowList = GenerateRows(playerCharacters);
+            List<BaseCharRow> charRowList = GenerateRows(playerCharacters, filter);
 
             if (ImGui.BeginTable("table1", configuration.AnonymousMode ? columnCount - 1 : columnCount, tableFlags))
             {
@@ -60,7 +55,7 @@ namespace ActionViewer.Functions
                     for (var i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
                     {
                         var row = charRowList[i];
-                        if (filter == "none" || (filter == "Dead" && row.character.IsDead))
+                        if (filter == "none" || filter == "Dead")
                         {
                             // player job, name
                             ImGui.TableNextColumn();

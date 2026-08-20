@@ -10,6 +10,7 @@ using System.Data;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.Colors;
+using System;
 
 namespace ActionViewer.Functions
 {
@@ -44,8 +45,13 @@ namespace ActionViewer.Functions
 			return statusInfo;
 		}
 
-		private static List<OCCharRow> GenerateRows(List<IBattleChara> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, string filter, bool inFT)
+		private static Tuple<List<OCCharRow>, List<OCCharRow>[]> GenerateRows(List<IBattleChara> playerCharacters, ExcelSheet<Lumina.Excel.Sheets.Status> statusSheet, string filter, bool inFT)
 		{
+			List<OCCharRow>[] pjobs = new List<OCCharRow>[24];
+			for(int i = 0; i < 24; i++)
+			{
+				pjobs[i] = new List<OCCharRow>();
+			}
 			List<OCCharRow> charRowList = new List<OCCharRow>();
 			foreach (IBattleChara character in playerCharacters)
 			{
@@ -65,11 +71,12 @@ namespace ActionViewer.Functions
 						break;
 					default:
 						charRowList.Add(row);
+						pjobs[row.statusInfo.phantomJob != null && row.statusInfo.phantomJob.Value.RowId > 4242 ? PJobMappings.pJobDict.GetValueOrDefault(row.statusInfo.phantomJob.Value.RowId) : 0].Add(row);
 						break;
 				}
 
 			}
-			return charRowList;
+			return new Tuple<List<OCCharRow>, List<OCCharRow>[]>(charRowList, pjobs);
 		}
 
 		private static void InitializeOCTable(bool inFT, bool anonymousMode)
@@ -109,8 +116,9 @@ namespace ActionViewer.Functions
 			var iconSizeVec = new Vector2(iconSize, iconSize);
 			int columnCount = inFT ? 6 : 5;
 
-
-			List<OCCharRow> charRowList = GenerateRows(playerCharacters, statusSheet, filter, inFT);
+			Tuple<List<OCCharRow>, List<OCCharRow>[]> rowsOutput = GenerateRows(playerCharacters, statusSheet, filter, inFT);
+			List<OCCharRow> charRowList = rowsOutput.Item1;
+			List<OCCharRow>[] ocJobs = rowsOutput.Item2;
 			if (filter != "FT")
 			{
 
@@ -188,101 +196,22 @@ namespace ActionViewer.Functions
 					// we could do a find all but just process them all at once
 					// we should make this code suck less eventually but the feature is useful
 					// and this doesn't affect performance so just leaving it as is until a later refactor.
-					var geomancers = new List<OCCharRow>();
-					ushort geomancerLevelReq = 4;
-					var timeMages = new List<OCCharRow>();
-					ushort timeMageLevelReq = 4;
-					var thiefs = new List<OCCharRow>();
-					ushort thiefLevelReq = 6;
-					var bards = new List<OCCharRow>();
-					ushort bardLevelReq = 2;
-					var rangers = new List<OCCharRow>();
-					ushort rangerLevelReq = 4;
-					var berserkers = new List<OCCharRow>();
-					ushort berserkerLevelReq = 1;
-					var mysticKnights = new List<OCCharRow>();
-					ushort mysticKnightLeveLReq = 4;
-					var cannonDancer = new List<OCCharRow>();
-					ushort dancerLevelReq = 4;
-					ushort cannoneerLevelReq = 6;
-					var chemist = new List<OCCharRow>();
-					ushort chemistLevelReq = 3;
-					ushort whiteMageLevelReq = 4;
-
-					foreach (OCCharRow ocChar in charRowList)
+					for (int i = 0; i < 24; i++)
 					{
-						if (ocChar.statusInfo.phantomJob != null)
+						if (configuration.Jobs[i] > 0)
 						{
-							var phantomJob = ocChar.statusInfo.phantomJob.Value.RowId;
-							var jobLevel = ocChar.statusInfo.jobLevel;
-							switch (phantomJob)
+							List<OCCharRow> oCCharRows = new List<OCCharRow>();
+							foreach (var OCJob in ocJobs[i])
 							{
-								// Geomancer
-								case 4364:
-									if (jobLevel >= geomancerLevelReq) geomancers.Add(ocChar);
-									break;
-								// Time Mage
-								case 4365:
-									if (jobLevel >= timeMageLevelReq) timeMages.Add(ocChar);
-									break;
-								// Thief
-								case 4369:
-									if (jobLevel >= thiefLevelReq) thiefs.Add(ocChar);
-									break;
-								// Bard
-								case 4363:
-									if (jobLevel >= bardLevelReq) bards.Add(ocChar);
-									break;
-								// Ranger
-								case 4361:
-									if (jobLevel >= rangerLevelReq) rangers.Add(ocChar);
-									break;
-								// Berserker
-								case 4359:
-									if (jobLevel >= berserkerLevelReq) berserkers.Add(ocChar);
-									break;
-								// Mystic Knight
-								case 4803:
-									if (jobLevel >= mysticKnightLeveLReq) mysticKnights.Add(ocChar);
-									break;
-								// Cannoneer
-								case 4366:
-									if (jobLevel >= cannoneerLevelReq) cannonDancer.Add(ocChar);
-									break;
-								// Dancer
-								case 4805:
-									if (jobLevel >= dancerLevelReq) cannonDancer.Add(ocChar);
-									break;
-								// Dancer
-								case 4367:
-									if (jobLevel >= chemistLevelReq) chemist.Add(ocChar);
-									break;
-								// White Mage
-								case 5329:
-									if (jobLevel >= whiteMageLevelReq) chemist.Add(ocChar);
-									break;
+								if (OCJob.statusInfo.jobLevel >= PJobMappings.levelReq[i])
+								{
+									oCCharRows.Add(OCJob);
+								}
 							}
+							ImGui.TextColored(oCCharRows.Count == configuration.Jobs[i] || (configuration.JobOverflow[i] && oCCharRows.Count > configuration.Jobs[i]) ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"{PJobMappings.pJobList[i]}: {oCCharRows.Count}/{configuration.Jobs[i]}");
+							ListCharacters(oCCharRows);
 						}
 					}
-
-					ImGui.TextColored(geomancers.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Geomancers: {geomancers.Count}/2");
-					ListCharacters(geomancers);
-					ImGui.TextColored(timeMages.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Time Mages: {timeMages.Count}/2");
-					ListCharacters(timeMages);
-					ImGui.TextColored(thiefs.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Thieves: {thiefs.Count}/2");
-					ListCharacters(thiefs);
-					ImGui.TextColored(rangers.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Rangers: {rangers.Count}/2");
-					ListCharacters(rangers);
-					ImGui.TextColored(berserkers.Count >= 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Berserkers: {berserkers.Count}/1");
-					ListCharacters(berserkers);
-					ImGui.TextColored(bards.Count >= 2 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Bards: {bards.Count}/2");
-					ListCharacters(bards);
-					ImGui.TextColored(chemist.Count >= 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Chemists/WHM: {chemist.Count}/1");
-					ListCharacters(chemist);
-					ImGui.TextColored(mysticKnights.Count == 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Mystic Knights: {mysticKnights.Count}/1");
-					ListCharacters(mysticKnights);
-					ImGui.TextColored(cannonDancer.Count == 1 ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudRed, $"Dancers and Cannoneers: {cannonDancer.Count}/1");
-					ListCharacters(cannonDancer);
 				}
 			}
 		}

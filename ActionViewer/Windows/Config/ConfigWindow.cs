@@ -32,6 +32,8 @@ public partial class ConfigWindow : Window
         {
             Settings();
 
+            FTConfig();
+
             About();
         }
         ImGui.EndTabBar();
